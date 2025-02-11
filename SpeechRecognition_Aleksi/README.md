@@ -1,13 +1,14 @@
 # My Python Project
 
 ## 🚀 Description
-This project can control tello drone with python speech recognition. There is also some test files.
+This project can control tello drone with vosk -speech recognition in python. There are also some test files included.
 
 ## 🔧 Installation
-```bash
-git clone https://github.com/yourusername/yourrepo.git
-cd yourrepo
-pip install -r requirements.txt
+- download this in your own chosen way
+- install python
+- open in a code editor
+- Install the dependencies from editors console
+
 
 ## 🔧 Requirements
 - Python 3.8+

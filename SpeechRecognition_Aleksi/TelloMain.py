@@ -46,7 +46,7 @@ ti.init()
 Drone = tello.Tello()
 Drone.connect()
 
-print(Drone.get_Battery())
+print(Drone.get_battery())
 
 Drone.streamon()
 

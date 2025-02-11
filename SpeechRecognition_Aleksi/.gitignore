@@ -1,5 +1,6 @@
 # Ignore virtual environments
 venv/
+.venv/
 .env
 
 # Ignore system files
@@ -12,3 +13,7 @@ __pycache__/
 logs/
 *.log
 *.sqlite3
+
+# These are for keyboard control, lets ignore them
+TelloInput.py
+TelloMain.py
