@@ -45,16 +45,16 @@ def getVoiceInput():
             # Landing & Takeoff
             elif command == "land": 
                 print("Landing...")
-                #Drone.Land()
+                Drone.Land()
                 time.sleep(3)
             elif command == "take off":
                 print("Taking off...")
-                #Drone.takeoff()
+                Drone.takeoff()
 
             # Capture image from drone camera
             elif command == "image":
                 print("Capturing image...")
-                #img = Drone.get_frame_read().frame
+                img = Drone.get_frame_read().frame
                 cv2.imwrite(f"Images/{time.time()}.jpg", img)
                 time.sleep(0.3)
 
@@ -72,11 +72,11 @@ mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000,
 mic.start_stream()
 
 # === Drone_Connection ===
-#Drone = tello.Tello()
-#Drone.connect()
-#print(f"Battery: {Drone.get_battery()}%")
+Drone = tello.Tello()
+Drone.connect()
+print(f"Battery: {Drone.get_battery()}%")
 
-#Drone.streamon()
+Drone.streamon()
 
 # === MAIN_LOOP ===
 while True:
@@ -89,16 +89,16 @@ while True:
 
     # Drone control
     print(f"Values: {keyValues[0],keyValues[1],keyValues[2],keyValues[3]}")
-    #Drone.send_rc_control(keyValues[0],keyValues[1],keyValues[2],keyValues[3])
+    Drone.send_rc_control(keyValues[0],keyValues[1],keyValues[2],keyValues[3])
     # Get image from drone cam
-    #img = Drone.get_frame_read().frame
-    #img = cv2.resize(img, (1080, 720))
+    img = Drone.get_frame_read().frame
+    img = cv2.resize(img, (1080, 720))
     # Show frame
-    #cv2.imshow("DroneCapture", img)
-    #cv2.waitKey(1)
+    cv2.imshow("DroneCapture", img)
+    cv2.waitKey(1)
     time.sleep(1)
 
 # === CLEAN_UP ===
-#Drone.end()
+Drone.end()
 mic.stop_stream()
 mic.close()
