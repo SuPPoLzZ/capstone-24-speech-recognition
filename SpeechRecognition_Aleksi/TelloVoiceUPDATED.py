@@ -41,6 +41,9 @@ def getVoiceInput():
             elif command == "down": ud = -liftSpeed; print(ud)
             elif command == "turn left": yv = rotationSpeed; print(yv)
             elif command == "turn right": yv = -rotationSpeed; print(yv)
+            elif command == "spin": cw = 360; print(cw)
+            elif command == "spin counter clockwise": ccw = -360; print(ccw)  
+            
             
             # Landing & Takeoff
             elif command == "land": 
