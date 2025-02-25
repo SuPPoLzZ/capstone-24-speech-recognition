@@ -1,6 +1,6 @@
 from djitellopy import tello
 import time
-import TelloInput as ti
+import Useless.TelloUtility as ti
 import cv2
 
 global img
@@ -54,8 +54,7 @@ while True:
     # Get the return value and store it on variable
     keyValues = getKeyboardInput()
     # Control the drone
-    Drone.send_rc_control(keyValues[0],keyValues[1],
-                          keyValues[2],keyValues[3])
+    Drone.send_rc_control(keyValues[0],keyValues[1],keyValues[2],keyValues[3])
     # Get image from drone cam
     img = Drone.get_frame_read().frame
     img = cv2.resize(img, (1080, 720))
