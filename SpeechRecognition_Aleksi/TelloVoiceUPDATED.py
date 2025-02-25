@@ -5,6 +5,7 @@ import cv2
 from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
+import os
 
 global img # Global variable for image capture
 
@@ -72,7 +73,8 @@ def getVoiceInput():
 
 
 # === SETUP_SPEECH_RECOGNITION ===
-model = Model("C:/Users/psemppa/Downloads/vosk-model-en-us-0.22")
+#model = Model("C:/Users/psemppa/Downloads/vosk-model-en-us-0.22")
+model = Model(os.path.dirname(__file__)+"\Python_Packages\VoskModelSmall_en-us_0.15")
 recognizer = KaldiRecognizer(model, 16000)
 mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
                              input=True, frames_per_buffer=4096)
