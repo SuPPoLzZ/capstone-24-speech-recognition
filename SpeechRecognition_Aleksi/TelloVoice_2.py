@@ -1,11 +1,12 @@
 from djitellopy import tello
 import time
 import cv2
-
 from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
 import os
+import math
+import download_sample
 
 global img # Global variable for image capture
 
@@ -73,8 +74,11 @@ def getVoiceInput():
 
 
 # === SETUP_SPEECH_RECOGNITION ===
-#model = Model("C:/Users/psemppa/Downloads/vosk-model-en-us-0.22")
-model = Model(os.path.dirname(__file__)+"\Python_Packages\VoskModelSmall_en-us_0.15")
+if not os.path.exists(os.path.dirname(__file__)+"/vosk/VoskModelSmall_en-us-0.15"):
+    print("MODEL NOT FOUND - DOWNLOADING...")
+    os.system("download_sample.py")
+
+model = Model("vosk/vosk-model-small-en-us-0.15")
 recognizer = KaldiRecognizer(model, 16000)
 mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
                              input=True, frames_per_buffer=4096)
@@ -119,6 +123,10 @@ O_pattern = [
 # === MATRIX_PANEL_FUNCTIONS ===
 def update_matrix(display_pattern):
     tello.set_matrix_pattern(display_pattern)
+
+
+# === CAMERA CALCUATIONS ===
+
 
 
 # === Drone_Connection ===
