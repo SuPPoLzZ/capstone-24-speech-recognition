@@ -1,6 +1,5 @@
 import requests
 import os
-import zipfile
 import shutil
 
 def download_file(url, filename):
