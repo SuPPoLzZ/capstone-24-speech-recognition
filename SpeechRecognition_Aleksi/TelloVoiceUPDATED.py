@@ -80,6 +80,47 @@ mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000,
                              input=True, frames_per_buffer=4096)
 mic.start_stream()
 
+# === MATRIX PANEL ===
+pattern = [
+    0, 0, 0, 0, 0, 0, 0, 0,  # Row 1
+    0, 0, 0, 0, 0, 0, 0, 0,  # Row 2
+    0, 0, 0, 0, 0, 0, 0, 0,  # Row 3
+    0, 0, 0, 0, 0, 0, 0, 0,  # Row 4
+    0, 0, 0, 0, 0, 0, 0, 0,  # Row 5
+    0, 0, 0, 0, 0, 0, 0, 0,  # Row 6
+    0, 0, 0, 0, 0, 0, 0, 0,  # Row 7
+    0, 0, 0, 0, 0, 0, 0, 0   # Row 8
+    
+]
+
+# === MATRIX PANEL PATTERNS ===
+X_pattern = [
+    [1, 0, 0, 0, 0, 0, 0, 1],  # Row 1
+    [0, 1, 0, 0, 0, 0, 1, 0],  # Row 2
+    [0, 0, 1, 0, 0, 1, 0, 0],  # Row 3
+    [0, 0, 0, 1, 1, 0, 0, 0],  # Row 4
+    [0, 0, 0, 1, 1, 0, 0, 0],  # Row 5
+    [0, 0, 1, 0, 0, 1, 0, 0],  # Row 6
+    [0, 1, 0, 0, 0, 0, 1, 0],  # Row 7
+    [1, 0, 0, 0, 0, 0, 0, 1]   # Row 8
+]
+
+O_pattern = [ 
+    [0, 1, 1, 1, 1, 1, 1, 0],  # Row 1
+    [1, 0, 0, 0, 0, 0, 0, 1],  # Row 2
+    [1, 0, 0, 0, 0, 0, 0, 1],  # Row 3
+    [1, 0, 0, 0, 0, 0, 0, 1],  # Row 4
+    [1, 0, 0, 0, 0, 0, 0, 1],  # Row 5
+    [1, 0, 0, 0, 0, 0, 0, 1],  # Row 6
+    [1, 0, 0, 0, 0, 0, 0, 1],  # Row 7
+    [0, 1, 1, 1, 1, 1, 1, 0]   # Row 8
+]
+
+# === MATRIX_PANEL_FUNCTIONS ===
+def update_matrix(display_pattern):
+    tello.set_matrix_pattern(display_pattern)
+
+
 # === Drone_Connection ===
 Drone = tello.Tello()
 Drone.connect()
@@ -95,10 +136,12 @@ while True:
     # Get distance data from the drone
     distance = Drone.get_distance()
     print(f"Distance from object: {distance} cm")
+    update_matrix(O_pattern)  # Update the matrix panel
 
     if distance < 20:  # If something is too close
         print("Obstacle detected! Moving back!")
         Drone.move_back(15)  # Move the drone back if the object is too close
+        update_matrix(X_pattern)  # Update matrix to show 'X' pattern
     else:
         print("Path is clear")
 
