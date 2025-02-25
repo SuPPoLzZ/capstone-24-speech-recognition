@@ -1,6 +1,6 @@
 from djitellopy import tello
 import time
-import TelloInput as ti
+import Useless.TelloUtility as ti
 import cv2
 
 from vosk import Model, KaldiRecognizer
@@ -55,14 +55,6 @@ def getVoiceInput():
             print("Capturing image...")
             cv2.imwrite(f"tellopy/Resources/Images/{time.time()}.jpg", img)
             time.sleep(0.3)
-
-        # Backflip
-
-        if result["text"] == "backflip": 
-            Drone.flip_back()
-            print("Performing backflip...")
-            
-
     
         return [lr, fb, ud, yv] # Return given value
 
