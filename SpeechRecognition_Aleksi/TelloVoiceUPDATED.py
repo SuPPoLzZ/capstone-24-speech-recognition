@@ -72,7 +72,7 @@ def getVoiceInput():
 
 
 # === SETUP_SPEECH_RECOGNITION ===
-model = Model("Python_Packages/VoskModelSmall_en-us_0.15")
+model = Model("C:/Users/psemppa/Downloads/vosk-model-en-us-0.22")
 recognizer = KaldiRecognizer(model, 16000)
 mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
                              input=True, frames_per_buffer=4096)
@@ -90,7 +90,17 @@ while True:
     # Get the return value and store it on variable
     keyValues = getVoiceInput()
 
-    if keyValues == [None]: # On 'Exit' command, stop the loop
+    # Get distance data from the drone
+    distance = Drone.get_distance()
+    print(f"Distance from object: {distance} cm")
+
+    if distance < 20:  # If something is too close
+        print("Obstacle detected! Moving back!")
+        Drone.move_back(15)  # Move the drone back if the object is too close
+    else:
+        print("Path is clear")
+
+    if keyValues == [None]:  # On 'Exit' command, stop the loop
         print("Exiting...")
         break
 
