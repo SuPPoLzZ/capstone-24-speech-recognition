@@ -1,11 +1,13 @@
 # main.py
 
 import time
-from drone_connection import Drone
+from djitellopy import tello
 from voice_control import getVoiceInput
 from matrix_control import update_matrix, X_pattern, O_pattern
 from waypoint_control import waypoints
 import cv2
+
+Drone = tello.Tello()
 
 def main():
     # Drone setup
