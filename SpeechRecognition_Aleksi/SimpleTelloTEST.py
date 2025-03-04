@@ -10,13 +10,16 @@ drone.connect()
 # Print battery level
 print(f"Battery: {drone.get_battery()}%")
 
-drone.send_command_with_return("command")
+#drone.send_command_with_return("command")
 
-drone.query_sdk_version()
+#drone.query_sdk_version()
 print(f"Temp: {drone.get_temperature()}")
+print(f"Battery: {drone.get_battery()}")
 
-#drone.turn_motor_on()
-#drone.reboot()
+drone.turn_motor_on()
+time.sleep(5)
+drone.turn_motor_off()
+drone.end()
 
 """
 drone.streamon()
