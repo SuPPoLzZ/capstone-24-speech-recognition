@@ -4,9 +4,8 @@ import cv2
 from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
-import os
 import math
-import download_sample
+
 
 global img # Global variable for image capture
 
@@ -50,6 +49,16 @@ def getVoiceInput():
             elif command == "front flip" or "frontflip": Drone.flip('f') 
             elif command == "backflip" or "back flip": Drone.flip('b') 
 
+            # WAYPOINT COMMANDS
+            if "go to A" in command:
+                tello.go_xyz_speed(waypoints["A"]["x"], waypoints["A"]["y"], waypoints["A"]["z"], 30)
+                print("Heading to waypoint A!")
+
+            if "go to B" in command:
+                tello.go_xyz_speed(waypoints["B"]["x"], waypoints["B"]["y"], waypoints["B"]["z"], 30)
+                print("Heading to waypoint B!")
+
+
 
             # Landing & Takeoff
             elif command == "land": 
@@ -74,10 +83,6 @@ def getVoiceInput():
 
 
 # === SETUP_SPEECH_RECOGNITION ===
-if not os.path.exists(os.path.dirname(__file__)+"/vosk/VoskModelSmall_en-us-0.15"):
-    print("MODEL NOT FOUND - DOWNLOADING...")
-    os.system("download_sample.py")
-
 model = Model("vosk/vosk-model-small-en-us-0.15")
 recognizer = KaldiRecognizer(model, 16000)
 mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
@@ -125,8 +130,16 @@ def update_matrix(display_pattern):
     tello.set_matrix_pattern(display_pattern)
 
 
-# === CAMERA CALCUATIONS ===
+# === CAMERA CALCUATIONS ===  NOT IMPLEMENTED YET
 
+
+
+# === WAYPOINT_FUNCTIONS ===
+
+waypoints = {
+    "A": {"x": 100, "y": 0, "z": 30},  
+    "B": {"x": 50, "y": 50, "z": 30}
+}
 
 
 # === Drone_Connection ===

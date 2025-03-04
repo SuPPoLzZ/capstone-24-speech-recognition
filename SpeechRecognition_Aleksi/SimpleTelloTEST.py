@@ -6,6 +6,7 @@ import time
 drone = Tello()
 drone.connect()
 
+
 # Print battery level
 print(f"Battery: {drone.get_battery()}%")
 
