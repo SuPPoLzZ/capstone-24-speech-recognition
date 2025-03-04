@@ -2,10 +2,12 @@
 
 import time
 from djitellopy import tello
-from voice_control import getVoiceInput
-from matrix_control import update_matrix, X_pattern, O_pattern
-from waypoint_control import waypoints
+import voice_control
+import waypoint_control
+from vosk import Model, KaldiRecognizer
+import pyaudio
 import cv2
+
 
 Drone = tello.Tello()
 
@@ -17,19 +19,9 @@ def main():
 
     while True:
         # Get the return value and store it in a variable
-        keyValues = getVoiceInput()
+        keyValues = voice_control.getVoiceInput()
 
-        # Get distance data from the drone
-        distance = Drone.get_distance()
-        print(f"Distance from object: {distance} cm")
-        update_matrix(O_pattern)  # Update the matrix panel with O pattern
 
-        if distance < 20:  # If something is too close
-            print("Obstacle detected! Moving back!")
-            Drone.move_back(15)  # Move the drone back if the object is too close
-            update_matrix(X_pattern)  # Update matrix to show 'X' pattern
-        else:
-            print("Path is clear")
 
         if keyValues == [None]:  # On 'Exit' command, stop the loop
             print("Exiting...")

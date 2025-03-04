@@ -4,6 +4,7 @@ import time
 import json
 import pyaudio
 from vosk import Model, KaldiRecognizer
+from main import Drone
 
 # Setup Vosk model and recognizer
 model = Model("vosk/vosk-model-small-en-us-0.15")
@@ -14,7 +15,7 @@ mic.start_stream()
 
 def getVoiceInput():
     start_time = time.time()
-    timeout = 3  # Wait for 3 seconds for an input
+    timeout = 5  # Wait for 5 seconds for an input
 
     print("Listening... (Speak!)")
     while time.time() - start_time < timeout:
@@ -35,7 +36,18 @@ def getVoiceInput():
             # Handle directional commands
             if command == "exit":
                 return [None]  # Signal to exit the program
+            
+            # Test commands
+            #if command == "best":
+                print(f"Temp: {Drone.get_temperature()}")
+                print(f"Battery: {Drone.get_battery()}")
+                Drone.turn_motor_on()
+                time.sleep(5)
+                Drone.turn_motor_off()
+                print("Test complete.")
+                Drone.end()
 
+            # Directional commands
             if command == "left": lr = -speed
             elif command == "right": lr = speed
             elif command == "forward": fb = moveSpeed
@@ -50,6 +62,15 @@ def getVoiceInput():
             elif command == "spin counter clockwise": yv = -360
             elif command in ["front flip", "frontflip"]: Drone.flip('f')
             elif command in ["backflip", "back flip"]: Drone.flip('b')
+
+            # Emergency stop
+            if command == "best":
+                print("Taking off...")
+                Drone.takeoff()
+            
+            if command == "stop":
+                print("Emergency stop!")
+                Drone.emergency()
 
             return [lr, fb, ud, yv]
 
