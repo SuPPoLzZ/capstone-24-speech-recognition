@@ -7,7 +7,7 @@ import waypoint_control
 from vosk import Model, KaldiRecognizer
 import pyaudio
 import cv2
-import video_stream
+import video_stream as vs
 
 
 Drone = tello.Tello(
@@ -18,11 +18,13 @@ Drone = tello.Tello(
 
 def main():
     # Drone setup
+    vs.start_video_stream()
     Drone.connect()
+
     print(f"Battery: {Drone.get_battery()}%")
-    
+
     # Start the video stream
-    start_video_stream()
+    
 
 
     while True:
@@ -39,14 +41,12 @@ def main():
         print(f"Values: {keyValues[0], keyValues[1], keyValues[2], keyValues[3]}")
         Drone.send_rc_control(keyValues[0], keyValues[1], keyValues[2], keyValues[3])
 
-        # Get image from drone cam
-        img = Drone.get_frame_read().frame
-        img = cv2.resize(img, (1080, 720))
-
-        # Show frame
-        cv2.imshow("DroneCapture", img)
-        cv2.waitKey(1)
-        time.sleep(1)
+        # Get image from drone cam(OLD LAGGY WAY OF VIDEO STREAM)
+        #img = Drone.get_frame_read().frame
+        #img = cv2.resize(img, (1080, 720))
+        #cv2.imshow("DroneCapture", img)
+        #cv2.waitKey(1)
+        #time.sleep(1)
 
     # Clean-up
     Drone.end()

@@ -6,6 +6,7 @@ import pyaudio
 from vosk import Model, KaldiRecognizer
 import numpy as np
 from main import Drone
+import video_stream as vs
 
 # Setup Vosk model and recognizer
 model = Model("vosk/vosk-model-small-en-us-0.15")
@@ -48,7 +49,8 @@ def getVoiceInput():
                 return [None]  # Signal to exit the program
             
             # Test commands
-            #if command == "best":
+            if command == "test":
+                vs.start_video_stream()
                 print(f"Temp: {Drone.get_temperature()}")
                 print(f"Battery: {Drone.get_battery()}")
                 Drone.turn_motor_on()
@@ -74,9 +76,9 @@ def getVoiceInput():
             elif command in ["backflip", "back flip"]: Drone.flip('b')
 
             # Emergency stop
-            if command == "best":
-                print("Taking off...")
-                Drone.takeoff()
+            #if command == "best":
+                #print("Taking off...")
+                #Drone.   takeoff          ()
             
             if command == "stop":
                 print("Landing...")
