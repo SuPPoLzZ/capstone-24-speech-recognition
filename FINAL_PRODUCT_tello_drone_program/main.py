@@ -7,15 +7,23 @@ import waypoint_control
 from vosk import Model, KaldiRecognizer
 import pyaudio
 import cv2
+import video_stream
 
 
-Drone = tello.Tello()
+Drone = tello.Tello(
+    #host="TELLO-99CCFF"
+    #host="192.168.10.2"
+    )
+
 
 def main():
     # Drone setup
     Drone.connect()
     print(f"Battery: {Drone.get_battery()}%")
-    Drone.streamon()
+    
+    # Start the video stream
+    start_video_stream()
+
 
     while True:
         # Get the return value and store it in a variable
