@@ -4,6 +4,7 @@ import time
 import json
 import pyaudio
 from vosk import Model, KaldiRecognizer
+import numpy as np
 from main import Drone
 
 # Setup Vosk model and recognizer
@@ -12,6 +13,15 @@ recognizer = KaldiRecognizer(model, 16000)
 mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
                              input=True, frames_per_buffer=4096)
 mic.start_stream()
+
+
+def preprocess_audio(data):
+    # Convert audio data to numpy array
+    audio_data = np.frombuffer(data, dtype=np.int16)
+    # Apply normalization
+    audio_data = audio_data / np.max(np.abs(audio_data))
+    # Convert back to bytes
+    return audio_data.tobytes()
 
 def getVoiceInput():
     start_time = time.time()
@@ -69,8 +79,9 @@ def getVoiceInput():
                 Drone.takeoff()
             
             if command == "stop":
-                print("Emergency stop!")
-                Drone.emergency()
+                print("Landing...")
+                Drone.Land()
+                time.sleep(3)
 
             return [lr, fb, ud, yv]
 
