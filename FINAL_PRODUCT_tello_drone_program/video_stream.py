@@ -1,50 +1,54 @@
 import cv2
 import socket
-import threading
-import time
+import numpy as np
 
-# Tello drone IP and port for video stream
-TELLORCVID_IP = '192.168.10.1'
-TELLORCVID_PORT = 11111
+def test_stream():
+    # Tello drone connection
+    Tello_ip = ('192.168.10.1', 8889)  # Tello command port
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-# Create a UDP socket to receive video stream
-video_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-video_socket.bind(('0.0.0.0', 9000))  # Use port 9000 for receiving video data
+    # Send command to Tello to start the video stream
+    sock.sendto(b'command', Tello_ip)  # Ensure the Tello is in command mode
+    sock.sendto(b'streamon', Tello_ip)  # Start video stream
 
-def receive_video():
+
+
+
+def stream_tello_video():
+    # Tello IP and Port for video stream
+    Tello_IP = "0.0.0.0"
+    VIDEO_PORT = 11112
+
+    # Set up UDP socket to receive video stream
+    video_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    video_socket.bind((Tello_IP, VIDEO_PORT))
+
+    # Create OpenCV window
+    cv2.namedWindow("Tello Stream", cv2.WINDOW_NORMAL)
+
     while True:
-        # Receive video data in chunks and display it
-        data, _ = video_socket.recvfrom(65536)  # Receive UDP packet
-        # Here, you need to decode the data (H.264 stream) for proper display
-        # OpenCV cannot directly display raw H.264, so we need to process it
-        frame = cv2.imdecode(data, cv2.IMREAD_COLOR)
-        if frame is not None:
-            cv2.imshow('Tello Video Stream', frame)
+        # Receive video data from Tello
+        frame, _ = video_socket.recvfrom(65536)
+        
+        # Decode the frame to a format OpenCV can display
+        nparr = np.frombuffer(frame, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        
+        if img is not None:
+            # Display the image in the OpenCV window
+            cv2.imshow("Tello Stream", img)
 
-        # Exit when the user presses 'q'
+        # Close the window if the 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-    # Close the socket and window
-    video_socket.close()
+    # Release resources and close the window
     cv2.destroyAllWindows()
+    video_socket.close()
 
-def start_video_stream():
-    # Set up the video stream from the Tello drone
-    tello_control_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    tello_control_socket.sendto(b'command', (TELLORCVID_IP, 8889))  # Put Tello in command mode
-    tello_control_socket.sendto(b'streamon', (TELLORCVID_IP, 8889))  # Start the video stream
-    
-    # Start a new thread to receive video
-    video_thread = threading.Thread(target=receive_video)
-    video_thread.start()
 
-    # Give some time for the drone to start the stream
-    time.sleep(2)
+if __name__ == "__main__":
+    test_stream()
+    stream_tello_video()
 
-    try:
-        # Keep running the stream until 'q' is pressed
-        video_thread.join()
-    except KeyboardInterrupt:
-        print("Stream interrupted by user")
 
