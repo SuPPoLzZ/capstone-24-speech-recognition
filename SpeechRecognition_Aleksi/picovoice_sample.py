@@ -1,5 +1,7 @@
 """
 Picovoice Porcupineの仕様サンプル
+Only Windows
+If you want to use it on other OS like MacOS, You should make other setting file.
 """
 
 """
@@ -15,7 +17,7 @@ import struct  # structモジュールをインポート
 script_path = __file__  # スクリプト自身のファイルパス
 script_directory = os.path.dirname(script_path)  # スクリプトのディレクトリパス
 
-access_key = "kbB3YPolDdITb1fUGfty6dPhiHdUPrXjOyddzyQguWC2l2jK1RT0Pw=="  # 取得したAccessKeyを入力
+access_key = "kbB3YPolDdITb1fUGfty6dPhiHdUPrXjOyddzyQguWC2l2jK1RT0Pw=="  #This is My API key # 取得したAccessKeyを入力
 keyword_paths = [script_directory+"/Drone-Test_en_windows_v3_0_0.ppn"]  # キーワードファイルのパスを指定
 
 porcupine = pvporcupine.create(
