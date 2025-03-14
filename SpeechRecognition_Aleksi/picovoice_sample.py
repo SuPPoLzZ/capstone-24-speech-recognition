@@ -2,6 +2,7 @@
 Picovoice Porcupineの仕様サンプル
 Only Windows
 If you want to use it on other OS like MacOS, You should make other setting file.
+This setting file recognize only 'Drone Test'.
 """
 
 """
