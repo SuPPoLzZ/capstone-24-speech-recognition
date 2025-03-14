@@ -1,6 +1,7 @@
 import time
 import json
 import pyaudio
+import keyboard
 from vosk import Model, KaldiRecognizer
 import numpy as np
 from djitellopy import Tello
@@ -42,67 +43,70 @@ def preprocess_audio(data):
 
 # Function to get voice input and return movement values
 def getVoiceInput():
-    start_time = time.time()
-    timeout = 5  # Wait for 5 seconds for an input
+    print("Press and hold 'Space' to talk...")
+
     lr, fb, ud, yv = 0, 0, 0, 0  # Initialize movement variables
     speed = 20
     liftSpeed = 20
     moveSpeed = 25
     rotationSpeed = 50
 
-    print("Listening... (Speak!)")
-    while time.time() - start_time < timeout:
-        data = mic.read(4096)
+    while True:
+        keyboard.wait('space')
+        print("Listening... (Speak!)")
 
-        if recognizer.AcceptWaveform(data):
-            result = json.loads(recognizer.Result())
-            command = result.get("text", "").strip().lower()
-            print(f"You said: {command}")
+        while keyboard.is_pressed('space'):
+            data = mic.read(4096)
 
-            # Handle recognized commands
-            if command in valid_commands:
-                # Command to exit the program
-                if command == "exit":
-                    return [None]  # Exit the program
+            if recognizer.AcceptWaveform(data):
+                result = json.loads(recognizer.Result())
+                command = result.get("text", "").strip().lower()
+                print(f"You said: {command}")
 
-                # Test command (Run diagnostics)
-                if command == "test":
-                    vs.start_video_stream()
-                    print(f"Temperature: {Tello.get_temperature()}")
-                    print(f"Battery: {Tello.get_battery()}")
-                    Tello.turn_motor_on()
-                    time.sleep(5)
-                    Tello.turn_motor_off()
-                    print("Test complete.")
-                    Tello.end()
+                # Handle recognized commands
+                if command in valid_commands:
+                    # Command to exit the program
+                    if command == "exit":
+                        return [None]  # Exit the program
 
-                # Directional movement commands
-                elif command == "left": lr = -speed
-                elif command == "right": lr = speed
-                elif command == "forward": fb = moveSpeed
-                elif command == "back": fb = -moveSpeed
-                elif command == "up": ud = liftSpeed
-                elif command == "down": ud = -liftSpeed
-                elif command == "turn left": yv = rotationSpeed
-                elif command == "turn right": yv = -rotationSpeed
+                    # Test command (Run diagnostics)
+                    if command == "test":
+                        vs.start_video_stream()
+                        print(f"Temperature: {Tello.get_temperature()}")
+                        print(f"Battery: {Tello.get_battery()}")
+                        Tello.turn_motor_on()
+                        time.sleep(5)
+                        Tello.turn_motor_off()
+                        print("Test complete.")
+                        Tello.end()
 
-                # Special commands (spin, flips)
-                elif command == "spin": yv = 360
-                elif command == "spin counter clockwise": yv = -360
-                elif command in ["front flip", "frontflip"]: Tello.flip('f')
-                elif command in ["backflip", "back flip"]: Tello.flip('b')
+                    # Directional movement commands
+                    elif command == "left": lr = -speed
+                    elif command == "right": lr = speed
+                    elif command == "forward": fb = moveSpeed
+                    elif command == "back": fb = -moveSpeed
+                    elif command == "up": ud = liftSpeed
+                    elif command == "down": ud = -liftSpeed
+                    elif command == "turn left": yv = rotationSpeed
+                    elif command == "turn right": yv = -rotationSpeed
 
-                # Stop the drone (land)
-                elif command == "stop":
-                    print("Landing...")
-                    Tello.land()
-                    time.sleep(3)
+                    # Special commands (spin, flips)
+                    elif command == "spin": yv = 360
+                    elif command == "spin counter clockwise": yv = -360
+                    elif command in ["front flip", "frontflip"]: Tello.flip('f')
+                    elif command in ["backflip", "back flip"]: Tello.flip('b')
 
-            else:
-                print(f"Unrecognized command: '{command}'")
+                    # Stop the drone (land)
+                    elif command == "stop":
+                        print("Landing...")
+                        Tello.land()
+                        time.sleep(3)
 
-            return [lr, fb, ud, yv]
+                else:
+                    print(f"Unrecognized command: '{command}'")
 
-    print(f"No commands given in the last {timeout}s. No movement issued.")
-    return [0, 0, 0, 0]  # Default: No command, no movement
+                return [lr, fb, ud, yv]
+
+        print(f"No commands given. No movement issued.")
+        return [0, 0, 0, 0]  # Default: No command, no movement
 
