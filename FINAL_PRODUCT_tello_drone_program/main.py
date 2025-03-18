@@ -1,6 +1,6 @@
 import time
 from djitellopy import Tello
-import voice_control
+from voice_control import getVoiceInput
 import waypoint_control
 from vosk import Model, KaldiRecognizer
 import pyaudio
@@ -12,15 +12,15 @@ Drone = Tello()
 
 def main():
     # Drone setup
-    Drone.connect()
-    print(f"Battery: {Drone.get_battery()}%")
+    #Drone.connect()
+    #print(f"Battery: {Drone.get_battery()}%")
 
     # Optionally, you can start the video stream in a separate thread to avoid blocking
-    vs.start_video_stream()
+    #vs.start_video_stream()
 
     while True:
         # Get voice command input
-        keyValues = voice_control.getVoiceInput()
+        keyValues = getVoiceInput()
 
         if keyValues == [None]:  # On 'Exit' command, stop the loop
             print("Exiting...")

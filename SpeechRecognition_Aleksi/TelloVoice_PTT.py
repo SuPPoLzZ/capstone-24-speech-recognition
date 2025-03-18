@@ -48,9 +48,9 @@ def getVoiceInput():
 
                 # Special commands
                 elif command == "spin": cw = 360; print(cw)
-                elif command == "spin counter clockwise": ccw = -360; print(ccw)  
-                elif command == "front flip": Drone.flip_forward() 
-                elif command == "backflip": Drone.flip_back() 
+                elif command == "spin counter clockwise": ccw = -360; print(ccw)
+                elif command == "front flip": Drone.flip_forward()
+                elif command == "backflip": Drone.flip_back()
 
                 # Landing & Takeoff
                 elif command == "land": 

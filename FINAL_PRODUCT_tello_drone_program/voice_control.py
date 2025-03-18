@@ -19,6 +19,7 @@ mic.start_stream()
 # Define valid commands for the drone
 valid_commands = {
     "test": "Perform a diagnostic test",
+    "best": "Alternative to test",
     "exit": "Exit the program",
     "left": "Move drone left",
     "right": "Move drone right",
@@ -70,7 +71,9 @@ def getVoiceInput():
                         return [None]  # Exit the program
 
                     # Test command (Run diagnostics)
-                    if command == "test":
+                    if command == "best":
+                        print("Hello World!")
+                        """
                         vs.start_video_stream()
                         print(f"Temperature: {Tello.get_temperature()}")
                         print(f"Battery: {Tello.get_battery()}")
@@ -79,6 +82,7 @@ def getVoiceInput():
                         Tello.turn_motor_off()
                         print("Test complete.")
                         Tello.end()
+                        """
 
                     # Directional movement commands
                     elif command == "left": lr = -speed
