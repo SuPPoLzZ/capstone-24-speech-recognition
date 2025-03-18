@@ -109,4 +109,3 @@ def getVoiceInput():
 
         print(f"No commands given. No movement issued.")
         return [0, 0, 0, 0]  # Default: No command, no movement
-

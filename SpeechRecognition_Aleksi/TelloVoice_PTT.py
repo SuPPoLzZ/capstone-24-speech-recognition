@@ -1,6 +1,5 @@
 from djitellopy import tello
 import time
-import cv2
 import keyboard
 
 from vosk import Model, KaldiRecognizer
@@ -69,7 +68,7 @@ def getVoiceInput():
 
 
 # === SETUP_SPEECH_RECOGNITION ===
-model = Model("VoskModelSmall_en-us_0.15")
+model = Model("vosk/vosk-model-small-en-us-0.15")
 recognizer = KaldiRecognizer(model, 16000)
 mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
                              input=True, frames_per_buffer=4096)
@@ -86,6 +85,12 @@ while True:
     # Get the return value and store it on variable
     keyValues = getVoiceInput()
     
+    if keyboard.is_pressed('k'):
+        Drone.land()
+        time.sleep(1)
+        Drone.end()
+        break
+
     if keyValues == [None]: # On 'Exit' command, stop the loop
         print("Exiting...")
         Drone.land()
