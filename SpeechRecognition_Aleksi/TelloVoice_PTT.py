@@ -64,7 +64,6 @@ def getVoiceInput():
         time.sleep(10)
         Drone.turn_motor_off()
         print("Test done")
-        return [None]
     
     else:
         lr, fb, ud, yv = 0,0,0,0

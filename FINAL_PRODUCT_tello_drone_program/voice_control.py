@@ -5,7 +5,7 @@ import keyboard
 from vosk import Model, KaldiRecognizer
 import numpy as np
 from djitellopy import tello
-import video_stream as vs
+#import video_stream as vs
 
 # Setup Vosk model and recognizer
 model = Model("vosk/vosk-model-small-en-us-0.15")
@@ -72,7 +72,7 @@ def getVoiceInput():
             return [None]  # Exit the program
 
         # Test command (Run diagnostics)
-        if command == "best":
+        if command in ["test","best"]:
             #vs.start_video_stream()
             print(f"Temperature: {Drone.get_temperature()}")
             print(f"Battery: {Drone.get_battery()}")
