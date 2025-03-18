@@ -4,7 +4,7 @@ import pyaudio
 import keyboard
 from vosk import Model, KaldiRecognizer
 import numpy as np
-from djitellopy import Tello
+from djitellopy import tello
 import video_stream as vs
 
 # Setup Vosk model and recognizer
@@ -16,10 +16,13 @@ mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000,
                              input=True, frames_per_buffer=4096)
 mic.start_stream()
 
+Drone = tello.Tello()
+
 # Define valid commands for the drone
 valid_commands = {
     "test": "Perform a diagnostic test",
     "best": "Alternative to test",
+    "take off": "Takes off",
     "exit": "Exit the program",
     "left": "Move drone left",
     "right": "Move drone right",
@@ -72,17 +75,14 @@ def getVoiceInput():
 
                     # Test command (Run diagnostics)
                     if command == "best":
-                        print("Hello World!")
-                        """
-                        vs.start_video_stream()
-                        print(f"Temperature: {Tello.get_temperature()}")
-                        print(f"Battery: {Tello.get_battery()}")
-                        Tello.turn_motor_on()
+                        #vs.start_video_stream()
+                        print(f"Temperature: {Drone.get_temperature()}")
+                        print(f"Battery: {Drone.get_battery()}")
+                        Drone.turn_motor_on()
                         time.sleep(5)
-                        Tello.turn_motor_off()
+                        Drone.turn_motor_off()
                         print("Test complete.")
-                        Tello.end()
-                        """
+                        Drone.end()
 
                     # Directional movement commands
                     elif command == "left": lr = -speed
@@ -97,14 +97,18 @@ def getVoiceInput():
                     # Special commands (spin, flips)
                     elif command == "spin": yv = 360
                     elif command == "spin counter clockwise": yv = -360
-                    elif command in ["front flip", "frontflip"]: Tello.flip('f')
-                    elif command in ["backflip", "back flip"]: Tello.flip('b')
+                    elif command in ["front flip", "frontflip"]: Drone.flip('f')
+                    elif command in ["backflip", "back flip"]: Drone.flip('b')
 
                     # Stop the drone (land)
                     elif command == "stop":
                         print("Landing...")
-                        Tello.land()
+                        Drone.land()
                         time.sleep(3)
+
+                    elif command == "take off":
+                        print("Taking Off...")
+                        Drone.takeoff()
 
                 else:
                     print(f"Unrecognized command: '{command}'")
