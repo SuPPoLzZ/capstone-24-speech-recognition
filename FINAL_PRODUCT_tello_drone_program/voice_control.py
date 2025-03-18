@@ -48,72 +48,68 @@ def preprocess_audio(data):
 # Function to get voice input and return movement values
 def getVoiceInput():
     print("Press and hold 'Space' to talk...")
+    while not keyboard.is_pressed('space'):  # Wait until spacebar is pressed
+        time.sleep(0.1)  # Prevent high CPU usage
+
+    print("Listening... (Speak!)")
+
+    while keyboard.is_pressed('space'):
+        data = mic.read(4096)
+
+        if recognizer.AcceptWaveform(data):
+            result = json.loads(recognizer.Result())
+            command = result.get("text", "").strip().lower()
+            break
+    print("You said:", command if command else "No command detected.")
 
     lr, fb, ud, yv = 0, 0, 0, 0  # Initialize movement variables
-    speed = 20
-    liftSpeed = 20
-    moveSpeed = 25
-    rotationSpeed = 50
+    speed, liftSpeed, moveSpeed, rotationSpeed = 20,20,20,50
 
-    while True:
-        keyboard.wait('space')
-        print("Listening... (Speak!)")
+    # Handle recognized commands
+    if command in valid_commands:
+        # Command to exit the program
+        if command == "exit":
+            return [None]  # Exit the program
 
-        while keyboard.is_pressed('space'):
-            data = mic.read(4096)
+        # Test command (Run diagnostics)
+        if command == "best":
+            #vs.start_video_stream()
+            print(f"Temperature: {Drone.get_temperature()}")
+            print(f"Battery: {Drone.get_battery()}")
+            Drone.turn_motor_on()
+            time.sleep(5)
+            Drone.turn_motor_off()
+            print("Test complete.")
+            Drone.end()
 
-            if recognizer.AcceptWaveform(data):
-                result = json.loads(recognizer.Result())
-                command = result.get("text", "").strip().lower()
-                print(f"You said: {command}")
+        # Directional movement commands
+        elif command == "left": lr = -speed
+        elif command == "right": lr = speed
+        elif command == "forward": fb = moveSpeed
+        elif command == "back": fb = -moveSpeed
+        elif command == "up": ud = liftSpeed
+        elif command == "down": ud = -liftSpeed
+        elif command == "turn left": yv = rotationSpeed
+        elif command == "turn right": yv = -rotationSpeed
 
-                # Handle recognized commands
-                if command in valid_commands:
-                    # Command to exit the program
-                    if command == "exit":
-                        return [None]  # Exit the program
+        # Special commands (spin, flips)
+        elif command == "spin": yv = 360
+        elif command == "spin counter clockwise": yv = -360
+        elif command in ["front flip", "frontflip"]: Drone.flip('f')
+        elif command in ["backflip", "back flip"]: Drone.flip('b')
 
-                    # Test command (Run diagnostics)
-                    if command == "best":
-                        #vs.start_video_stream()
-                        print(f"Temperature: {Drone.get_temperature()}")
-                        print(f"Battery: {Drone.get_battery()}")
-                        Drone.turn_motor_on()
-                        time.sleep(5)
-                        Drone.turn_motor_off()
-                        print("Test complete.")
-                        Drone.end()
+        # Stop the drone (land)
+        elif command == "stop":
+            print("Landing...")
+            Drone.land()
+            time.sleep(3)
 
-                    # Directional movement commands
-                    elif command == "left": lr = -speed
-                    elif command == "right": lr = speed
-                    elif command == "forward": fb = moveSpeed
-                    elif command == "back": fb = -moveSpeed
-                    elif command == "up": ud = liftSpeed
-                    elif command == "down": ud = -liftSpeed
-                    elif command == "turn left": yv = rotationSpeed
-                    elif command == "turn right": yv = -rotationSpeed
+        elif command == "take off":
+            print("Taking Off...")
+            Drone.takeoff()
 
-                    # Special commands (spin, flips)
-                    elif command == "spin": yv = 360
-                    elif command == "spin counter clockwise": yv = -360
-                    elif command in ["front flip", "frontflip"]: Drone.flip('f')
-                    elif command in ["backflip", "back flip"]: Drone.flip('b')
+        else:
+            print(f"Unrecognized command: '{command}'")
 
-                    # Stop the drone (land)
-                    elif command == "stop":
-                        print("Landing...")
-                        Drone.land()
-                        time.sleep(3)
-
-                    elif command == "take off":
-                        print("Taking Off...")
-                        Drone.takeoff()
-
-                else:
-                    print(f"Unrecognized command: '{command}'")
-
-                return [lr, fb, ud, yv]
-
-        print(f"No commands given. No movement issued.")
-        return [0, 0, 0, 0]  # Default: No command, no movement
+        return [lr, fb, ud, yv]
+    return [0, 0, 0, 0]

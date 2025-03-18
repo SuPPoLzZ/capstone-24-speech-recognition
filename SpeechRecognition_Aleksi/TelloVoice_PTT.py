@@ -6,65 +6,70 @@ from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
 
-global img # Global variable for image capture
+#global img # Global variable for image capture
 
 # ===!!! THIS IS THE NEWEST UNMODIFIED VERSION OF THE WORKING CODE !!!===
 
 # === VOICE_CONTROL_FUNCTION ===
 def getVoiceInput():
     print("Press and hold 'Space' to talk...")
+    while not keyboard.is_pressed('space'):  # Wait until spacebar is pressed
+        time.sleep(0.1)  # Prevent high CPU usage
 
-    while True:
-        keyboard.wait('space')
-        print("Listening...")
+    print("Listening...")
 
-        while keyboard.is_pressed('space'):
-            data = mic.read(4096)
+    while keyboard.is_pressed('space'):
+        data = mic.read(4096)
 
-            if recognizer.AcceptWaveform(data):
-                result = json.loads(recognizer.Result())
-                command = result.get("text", "").strip()
-                print("You said:", command)
+        if recognizer.AcceptWaveform(data):
+            result = json.loads(recognizer.Result())
+            command = result.get("text", "").strip()
+            break
+    print("You said:", command if command else "No command detected.")
 
-                # Movement variables: LeftRight, FrontBack, UpDown, YawVelocity
-                lr, fb, ud, yv = 0,0,0,0
-                speed = 25
-                liftSpeed = 25
-                moveSpeed = 25
-                rotationSpeed = 50
+    # Movement variables: LeftRight, FrontBack, UpDown, YawVelocity
+    lr, fb, ud, yv = 0,0,0,0
+    speed, liftSpeed, moveSpeed, rotationSpeed = 25, 25, 25, 50
 
-                if command == "exit":
-                    return [None] # Signal to exit the program
+    if command == "exit":
+        return [None] # Signal to exit the program
 
-                # Directional commands
-                if command == "left": lr = -speed; print(lr)
-                elif command == "right": lr = speed; print(lr)
-                elif command == "forward": fb = moveSpeed; print(fb)
-                elif command == "back": fb = -moveSpeed; print(fb)
-                elif command == "up": ud = liftSpeed; print(ud)
-                elif command == "down": ud = -liftSpeed; print(ud)
-                elif command == "turn left": yv = rotationSpeed; print(yv)
-                elif command == "turn right": yv = -rotationSpeed; print(yv)
-
-                # Special commands
-                elif command == "spin": cw = 360; print(cw)
-                elif command == "spin counter clockwise": ccw = -360; print(ccw)
-                elif command == "front flip": Drone.flip_forward()
-                elif command == "backflip": Drone.flip_back()
-
-                # Landing & Takeoff
-                elif command == "land": 
-                    print("Landing...")
-                    Drone.land()
-                    time.sleep(3)
-                elif command == "take off":
-                    print("Taking off...")
-                    Drone.takeoff()
-
-                return [lr, fb, ud, yv] # Return movement values
+    # Directional commands
+    if command == "left": lr = -speed; print(lr)
+    elif command == "right": lr = speed; print(lr)
+    elif command == "forward": fb = moveSpeed; print(fb)
+    elif command == "back": fb = -moveSpeed; print(fb)
+    elif command == "up": ud = liftSpeed; print(ud)
+    elif command == "down": ud = -liftSpeed; print(ud)
+    elif command == "turn left": yv = rotationSpeed; print(yv)
+    elif command == "turn right": yv = -rotationSpeed; print(yv)
     
-        print(f"No valid commands given. No movement issued.")
-        return [0,0,0,0] # Default: No command, no movement
+    # Special commands
+    elif command == "spin": cw = 360; print(cw)
+    elif command == "spin counter clockwise": ccw = -360; print(ccw)
+    elif command == "front flip": print("Frontflip"); Drone.flip_forward()
+    elif command == "backflip": print("Backflip"); Drone.flip_back()
+
+    # Landing & Takeoff
+    elif command == "land": 
+        print("Landing...")
+        Drone.land()
+        time.sleep(3)
+    elif command == "take off":
+        print("Taking off...")
+        Drone.takeoff()
+
+    elif command in ["test", "best"]:
+        Drone.turn_motor_on()
+        time.sleep(10)
+        Drone.turn_motor_off()
+        print("Test done")
+        return [None]
+    
+    else:
+        lr, fb, ud, yv = 0,0,0,0
+
+    return [lr, fb, ud, yv] # Return movement values
 
 
 # === SETUP_SPEECH_RECOGNITION ===

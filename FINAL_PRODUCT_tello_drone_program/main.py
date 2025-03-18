@@ -1,4 +1,5 @@
 import time
+import keyboard
 from djitellopy import tello
 from voice_control import getVoiceInput
 #import waypoint_control
@@ -38,6 +39,12 @@ def main():
         # cv2.imshow("DroneCapture", img)
         # cv2.waitKey(1)
 
+        if keyboard.is_pressed('k'):
+            Drone.land()
+            time.sleep(1)
+            Drone.end()
+            break
+        
         # Sleep to avoid overloading the control loop
         time.sleep(0.1)
 
