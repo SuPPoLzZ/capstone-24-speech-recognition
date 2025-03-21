@@ -6,8 +6,6 @@ from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
 
-#global img # Global variable for image capture
-
 # ===!!! THIS IS THE NEWEST UNMODIFIED VERSION OF THE WORKING CODE !!!===
 
 # === VOICE_CONTROL_FUNCTION ===
@@ -29,23 +27,23 @@ def getVoiceInput():
 
     # Movement variables: LeftRight, FrontBack, UpDown, YawVelocity
     lr, fb, ud, yv = 0,0,0,0
-    speed, liftSpeed, moveSpeed, rotationSpeed = 25, 25, 25, 50
+    liftSpeed, moveSpeed, rotationSpeed = 25, 25, 50
 
     if command == "exit":
         return [None] # Signal to exit the program
 
     # Directional commands
-    if command == "left": lr = -speed; print(lr)
-    elif command == "right": lr = speed; print(lr)
-    elif command == "forward": fb = moveSpeed; print(fb)
-    elif command == "back": fb = -moveSpeed; print(fb)
-    elif command == "up": ud = liftSpeed; print(ud)
-    elif command == "down": ud = -liftSpeed; print(ud)
-    elif command == "turn left": yv = rotationSpeed; print(yv)
-    elif command == "turn right": yv = -rotationSpeed; print(yv)
+    if command == "go left": lr = -moveSpeed; print(lr)
+    elif command == "go right": lr = moveSpeed; print(lr)
+    elif command == "go forward": fb = moveSpeed; print(fb)
+    elif command == "go back": fb = -moveSpeed; print(fb)
+    elif command == "go up": ud = liftSpeed; print(ud)
+    elif command == "go down": ud = -liftSpeed; print(ud)
+    elif command == "rotate left": yv = rotationSpeed; print(yv)
+    elif command == "rotate right": yv = -rotationSpeed; print(yv)
     
     # Special commands
-    elif command == "spin": cw = 360; print(cw)
+    elif command == "spin clockwise": cw = 360; print(cw)
     elif command == "spin counter clockwise": ccw = -360; print(ccw)
     elif command == "front flip": print("Frontflip"); Drone.flip_forward()
     elif command == "backflip": print("Backflip"); Drone.flip_back()
