@@ -3,20 +3,26 @@ from djitellopy import Tello
 import voice_control
 import waypoint_control  # Assuming this module will be used later for waypoint control.
 import cv2
+import keyboard
 
 # Initialize the drone
 Drone = Tello()
 
+speed = 20
+moveSpeed = 25
+rotationSpeed = 50
+liftSpeed = 20
+
 def main():
     # Drone setup
-    Drone.connect()
-    print(f"Battery: {Drone.get_battery()}%")
+    #Drone.connect()
+    #sprint(f"Battery: {Drone.get_battery()}%")
 
     while True:
         # Get voice command input from voice_control
         command = voice_control.getVoiceInput()
 
-        if command:
+        if command or not keyboard.is_pressed('s'):
             print(f"Received command: {command}")
 
             # Execute the corresponding drone command
@@ -24,23 +30,26 @@ def main():
                 print("Exiting...")
                 break  # Exit the loop
 
+
             # Drone control commands (example)
             elif command == "go left":
-                Drone.move_left(20)
+                Drone.move_left(speed)
+            elif command == "go takeoff":
+                Drone.takeoff(1)
             elif command == "go right":
-                Drone.move_right(20)
+                Drone.move_right(speed)
             elif command == "go forward":
-                Drone.move_forward(25)
+                Drone.move_forward(speed)
             elif command == "go back":
-                Drone.move_back(25)
+                Drone.move_back(speed)
             elif command == "go up":
-                Drone.move_up(20)
+                Drone.move_up(liftSpeed)
             elif command == "go down":
-                Drone.move_down(20)
+                Drone.move_down(liftSpeed)
             elif command == "go turn left":
-                Drone.rotate_counter_clockwise(50)
+                Drone.rotate_counter_clockwise(rotationSpeed)
             elif command == "go turn right":
-                Drone.rotate_clockwise(50)
+                Drone.rotate_clockwise(rotationSpeed)
             elif command == "go stop":
                 print("Landing...")
                 Drone.land()
@@ -53,17 +62,24 @@ def main():
                 Drone.flip('f')
             elif command == "go flip back":
                 Drone.flip('b')
+            elif command == "go test":
+                Drone.turn_motor_on()
+                time.sleep(5)
+                Drone.turn_motor_off()
             else:
                 print("Unknown command.")
+            
+            
 
         # Optionally, you can start the video stream in a separate thread to avoid blocking
-        # img = Drone.get_frame_read().frame
-        # img = cv2.resize(img, (1080, 720))
-        # cv2.imshow("DroneCapture", img)
-        # cv2.waitKey(1)
+        #img = Drone.get_frame_read().frame
+        #img = cv2.resize(img, (1080, 720))
+        #cv2.imshow("DroneCapture", img)
+        #cv2.waitKey(1)
 
-        # Sleep to avoid overloading the control loop
-        time.sleep(0.1)
+    print("S pressed! Landing the drone.")
+    Drone.land()  # Land the drone
+    time.sleep(3) 
 
     # Clean-up
     Drone.end()
