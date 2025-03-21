@@ -15,8 +15,8 @@ liftSpeed = 20
 
 def main():
     # Drone setup
-    #Drone.connect()
-    #sprint(f"Battery: {Drone.get_battery()}%")
+    Drone.connect()
+    print(f"Battery: {Drone.get_battery()}%")
 
     while True:
         # Get voice command input from voice_control
@@ -35,7 +35,7 @@ def main():
             elif command == "go left":
                 Drone.move_left(speed)
             elif command == "go takeoff":
-                Drone.takeoff(1)
+                Drone.takeoff()
             elif command == "go right":
                 Drone.move_right(speed)
             elif command == "go forward":

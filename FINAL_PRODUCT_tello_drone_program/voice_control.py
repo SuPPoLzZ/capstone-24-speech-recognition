@@ -41,6 +41,7 @@ def getVoiceInput():
     while True:
         #data = mic.read(4096)
         data = mic.read(1400)
+        #data = mic.read(2000)
         if len(data) == 0:
             continue
 
