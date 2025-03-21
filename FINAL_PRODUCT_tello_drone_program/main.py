@@ -1,11 +1,8 @@
 import time
 from djitellopy import Tello
 import voice_control
-import waypoint_control
-from vosk import Model, KaldiRecognizer
-import pyaudio
+import waypoint_control  # Assuming this module will be used later for waypoint control.
 import cv2
-import video_stream as vs
 
 # Initialize the drone
 Drone = Tello()
@@ -15,24 +12,51 @@ def main():
     Drone.connect()
     print(f"Battery: {Drone.get_battery()}%")
 
-    # Optionally, you can start the video stream in a separate thread to avoid blocking
-    vs.start_video_stream()
-
     while True:
-        # Get voice command input
-        keyValues = voice_control.getVoiceInput()
+        # Get voice command input from voice_control
+        command = voice_control.getVoiceInput()
 
-        if keyValues == [None]:  # On 'Exit' command, stop the loop
-            print("Exiting...")
-            break
+        if command:
+            print(f"Received command: {command}")
 
-        # Check if valid movement values are returned
-        if keyValues != [0, 0, 0, 0]:
-            # Drone control (send the corresponding movement commands)
-            print(f"Values: {keyValues[0], keyValues[1], keyValues[2], keyValues[3]}")
-            Drone.send_rc_control(keyValues[0], keyValues[1], keyValues[2], keyValues[3])
+            # Execute the corresponding drone command
+            if command == "go exit":
+                print("Exiting...")
+                break  # Exit the loop
 
-        # Optional: Check and display the drone's camera feed (uncomment if needed)
+            # Drone control commands (example)
+            elif command == "go left":
+                Drone.move_left(20)
+            elif command == "go right":
+                Drone.move_right(20)
+            elif command == "go forward":
+                Drone.move_forward(25)
+            elif command == "go back":
+                Drone.move_back(25)
+            elif command == "go up":
+                Drone.move_up(20)
+            elif command == "go down":
+                Drone.move_down(20)
+            elif command == "go turn left":
+                Drone.rotate_counter_clockwise(50)
+            elif command == "go turn right":
+                Drone.rotate_clockwise(50)
+            elif command == "go stop":
+                print("Landing...")
+                Drone.land()
+                time.sleep(3)
+            
+            # Additional voice commands (e.g., take off, flip, etc.)
+            elif command == "go take off":
+                Drone.takeoff()
+            elif command == "go flip front":
+                Drone.flip('f')
+            elif command == "go flip back":
+                Drone.flip('b')
+            else:
+                print("Unknown command.")
+
+        # Optionally, you can start the video stream in a separate thread to avoid blocking
         # img = Drone.get_frame_read().frame
         # img = cv2.resize(img, (1080, 720))
         # cv2.imshow("DroneCapture", img)
