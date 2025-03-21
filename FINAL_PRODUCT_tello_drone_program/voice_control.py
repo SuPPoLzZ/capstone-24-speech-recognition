@@ -59,11 +59,14 @@ def getVoiceInput():
         if recognizer.AcceptWaveform(data):
             result = json.loads(recognizer.Result())
             command = result.get("text", "").strip().lower()
+            print("You said:", command if command else "No command detected.")
             break
-    print("You said:", command if command else "No command detected.")
+    return command
+
+def checkCommand(command):
 
     lr, fb, ud, yv = 0, 0, 0, 0  # Initialize movement variables
-    speed, liftSpeed, moveSpeed, rotationSpeed = 20,20,20,50
+    liftSpeed, moveSpeed, rotationSpeed = 20,20,20,50
 
     # Handle recognized commands
     if command in valid_commands:
@@ -83,8 +86,8 @@ def getVoiceInput():
             Drone.end()
 
         # Directional movement commands
-        elif command == "left": lr = -speed
-        elif command == "right": lr = speed
+        elif command == "left": lr = -moveSpeed
+        elif command == "right": lr = moveSpeed
         elif command == "forward": fb = moveSpeed
         elif command == "back": fb = -moveSpeed
         elif command == "up": ud = liftSpeed
