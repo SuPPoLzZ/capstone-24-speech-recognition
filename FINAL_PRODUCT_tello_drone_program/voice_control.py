@@ -5,6 +5,7 @@ import keyboard
 from vosk import Model, KaldiRecognizer
 import numpy as np
 from djitellopy import tello
+import drone_commands as dc
 #import video_stream as vs
 
 # Setup Vosk model and recognizer
@@ -20,23 +21,24 @@ Drone = tello.Tello()
 
 # Define valid commands for the drone
 valid_commands = {
-    "test": "Perform a diagnostic test",
-    "best": "Alternative to test",
-    "take off": "Takes off",
-    "exit": "Exit the program",
-    "left": "Move drone left",
-    "right": "Move drone right",
-    "forward": "Move drone forward",
-    "back": "Move drone back",
-    "up": "Move drone up",
-    "down": "Move drone down",
-    "turn left": "Turn drone left",
-    "turn right": "Turn drone right",
-    "spin": "Spin the drone 360 degrees",
-    "spin counter clockwise": "Spin the drone 360 degrees counter clockwise",
-    "front flip": "Make the drone perform a front flip",
-    "backflip": "Make the drone perform a back flip",
-    "stop": "Land the drone"
+    "go left": dc.Go_left,
+    "go right": dc.Go_right,
+    "go forward": dc.Go_forward,
+    "go back": dc.Go_back,
+    "go up": dc.Go_up,
+    "go down": dc.Go_down,
+    "rotate left": dc.Rotate_left,
+    "rotate right": dc.Rotate_right,
+    "spin clockwise": dc.Spin_clockwise,
+    "spin counter": dc.Spin_counter,
+    "do front flip": dc.Frontflip,
+    "do backflip": dc.Backflip,
+    "go land": dc.LandingSequence,
+    "take off": dc.Takingoff,
+    "go test": dc.Testing,
+    "go best": dc.Testing,
+    
+    "exit": "Exit the program"
 }
 
 # Function to preprocess audio (normalize the audio)
@@ -59,60 +61,21 @@ def getVoiceInput():
         if recognizer.AcceptWaveform(data):
             result = json.loads(recognizer.Result())
             command = result.get("text", "").strip().lower()
-            print("You said:", command if command else "No command detected.")
             break
+    
+    print("You said:", command if command else "No command detected.")
     return command
 
 def checkCommand(command):
+    command = valid_commands.get(command, getVoiceInput)
+    return command()
 
-    lr, fb, ud, yv = 0, 0, 0, 0  # Initialize movement variables
-    liftSpeed, moveSpeed, rotationSpeed = 20,20,20,50
-
-    # Handle recognized commands
-    if command in valid_commands:
-        # Command to exit the program
-        if command == "exit":
-            return [None]  # Exit the program
-
-        # Test command (Run diagnostics)
-        if command in ["test","best"]:
-            #vs.start_video_stream()
-            print(f"Temperature: {Drone.get_temperature()}")
-            print(f"Battery: {Drone.get_battery()}")
-            Drone.turn_motor_on()
-            time.sleep(5)
-            Drone.turn_motor_off()
-            print("Test complete.")
-            Drone.end()
-
-        # Directional movement commands
-        elif command == "left": lr = -moveSpeed
-        elif command == "right": lr = moveSpeed
-        elif command == "forward": fb = moveSpeed
-        elif command == "back": fb = -moveSpeed
-        elif command == "up": ud = liftSpeed
-        elif command == "down": ud = -liftSpeed
-        elif command == "turn left": yv = rotationSpeed
-        elif command == "turn right": yv = -rotationSpeed
-
-        # Special commands (spin, flips)
-        elif command == "spin": yv = 360
-        elif command == "spin counter clockwise": yv = -360
-        elif command in ["front flip", "frontflip"]: Drone.flip('f')
-        elif command in ["backflip", "back flip"]: Drone.flip('b')
-
-        # Stop the drone (land)
-        elif command == "stop":
-            print("Landing...")
-            Drone.land()
-            time.sleep(3)
-
-        elif command == "take off":
-            print("Taking Off...")
-            Drone.takeoff()
-
-        else:
-            print(f"Unrecognized command: '{command}'")
-
-        return [lr, fb, ud, yv]
-    return [0, 0, 0, 0]
+def ExitNow():
+    print("Exiting...")
+    try:
+        Drone.land()
+        time.sleep(1)
+    finally:
+        Drone.end()
+        mic.stop_stream()
+        mic.close()

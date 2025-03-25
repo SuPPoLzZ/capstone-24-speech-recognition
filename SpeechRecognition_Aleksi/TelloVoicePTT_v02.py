@@ -2,7 +2,6 @@ from djitellopy import tello
 import time
 import keyboard
 import DroneCommands as DroneComs
-
 from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
@@ -83,8 +82,8 @@ while not keyboard.is_pressed('k'):
         break
 
     # Drone control
-    movement = CheckForCommand(command)
-    print(f"Movement: {movement}")
+    command_is_valid = CheckForCommand(command)
+    print(f"Command: {command_is_valid}")
     time.sleep(1)
             
 # === CLEAN_UP ===
