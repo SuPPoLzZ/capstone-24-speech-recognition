@@ -7,29 +7,40 @@ Drone = tello.Tello()
 # Movement variables
 moveSpeed, liftSpeed, rotationSpeed = 25, 25, 50
 
-def go_left():
+def Go_left():
     return Drone.move_left(moveSpeed)
-def go_right():
+
+def Go_right():
     return Drone.move_right(moveSpeed)
-def go_forward():
+
+def Go_forward():
     return Drone.move_forward(moveSpeed)
-def go_back():
+
+def Go_back():
     return Drone.move_back(moveSpeed)
-def go_up():
+
+def Go_up():
     return Drone.move_up(liftSpeed)
-def go_down():
+
+def Go_down():
     return Drone.move_down(liftSpeed)
-def rotate_right():
+
+def Rotate_right():
     return Drone.rotate_clockwise(rotationSpeed)
-def rotate_left():
+
+def Rotate_left():
     return Drone.rotate_counter_clockwise(rotationSpeed)
-def spin_clockwise():
+
+def Spin_clockwise():
     return Drone.rotate_clockwise(rotationSpeed*4)
-def spin_counter():
+
+def Spin_counter():
     return Drone.rotate_counter_clockwise(rotationSpeed*4)
-def frontflip():
+
+def Frontflip():
     return Drone.flip_forward()
-def backflip():
+
+def Backflip():
     return Drone.flip_back()
 
 def LandingSequence():

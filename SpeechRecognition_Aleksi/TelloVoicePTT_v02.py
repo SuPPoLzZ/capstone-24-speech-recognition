@@ -1,7 +1,7 @@
 from djitellopy import tello
 import time
 import keyboard
-import TelloDroneCommands as tc
+import DroneCommands as DroneComs
 
 from vosk import Model, KaldiRecognizer
 import pyaudio
@@ -24,22 +24,22 @@ Drone.streamon()
 
 # === DRONE_CONTROL_DICTIONARY ===
 valid_commands = {
-    "go left": tc.go_left,
-    "go right": tc.go_right,
-    "go forward": tc.go_forward,
-    "go back": tc.go_back,
-    "go up": tc.go_up,
-    "go down": tc.go_down,
-    "rotate left": tc.rotate_left,
-    "rotate right": tc.rotate_right,
-    "spin clockwise": tc.spin_clockwise,
-    "spin counter": tc.spin_counter,
-    "do front flip": tc.frontflip,
-    "do backflip": tc.backflip,
-    "go land": tc.LandingSequence,
-    "take off": tc.Takingoff,
-    "go test": tc.Testing,
-    "go best": tc.Testing
+    "go left": DroneComs.Go_left,
+    "go right": DroneComs.Go_right,
+    "go forward": DroneComs.Go_forward,
+    "go back": DroneComs.Go_back,
+    "go up": DroneComs.Go_up,
+    "go down": DroneComs.Go_down,
+    "rotate left": DroneComs.Rotate_left,
+    "rotate right": DroneComs.Rotate_right,
+    "spin clockwise": DroneComs.Spin_clockwise,
+    "spin counter": DroneComs.Spin_counter,
+    "do front flip": DroneComs.Frontflip,
+    "do backflip": DroneComs.Backflip,
+    "go land": DroneComs.LandingSequence,
+    "take off": DroneComs.Takingoff,
+    "go test": DroneComs.Testing,
+    "go best": DroneComs.Testing
 }
 
 
