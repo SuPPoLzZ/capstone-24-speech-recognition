@@ -2,11 +2,6 @@ import time
 import keyboard
 from djitellopy import tello
 import voice_control as vc
-#import waypoint_control
-#from vosk import Model, KaldiRecognizer
-#import pyaudio
-#import cv2
-#import video_stream as vs
 
 # Initialize the drone
 Drone = tello.Tello()

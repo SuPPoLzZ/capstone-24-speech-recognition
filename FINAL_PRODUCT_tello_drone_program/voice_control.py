@@ -3,10 +3,9 @@ import json
 import pyaudio
 import keyboard
 from vosk import Model, KaldiRecognizer
-import numpy as np
 from djitellopy import tello
 import drone_commands as dc
-#import video_stream as vs
+from difflib import SequenceMatcher
 
 # Setup Vosk model and recognizer
 model = Model("vosk/vosk-model-small-en-us-0.15")
@@ -40,12 +39,6 @@ valid_commands = {
     
     "exit": "Exit the program"
 }
-
-# Function to preprocess audio (normalize the audio)
-def preprocess_audio(data):
-    audio_data = np.frombuffer(data, dtype=np.int16)
-    audio_data = audio_data / np.max(np.abs(audio_data))  # Normalize
-    return audio_data.tobytes()
 
 # Function to get voice input and return movement values
 def getVoiceInput():
