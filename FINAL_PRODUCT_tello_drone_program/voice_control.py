@@ -44,7 +44,7 @@ valid_commands = {
 
 # Function to get voice input and return movement values
 def getVoiceInput():
-    print("Press and hold 'Space' to talk...")
+    print("Press and hold 'Space' to talk, \nPress 'Space' + 'k' quickly to exit")
     while not keyboard.is_pressed('space'):  # Wait until spacebar is pressed
         time.sleep(0.1)  # Prevent high CPU usage
 
