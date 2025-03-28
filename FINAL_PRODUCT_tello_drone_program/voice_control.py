@@ -7,11 +7,11 @@ from djitellopy import tello
 import drone_commands as dc
 from difflib import SequenceMatcher
 
-Model_Path = "vosk/vosk-model-small-en-us-0.15"
-Threshold = 0.7
+MODEL_PATH = "vosk/vosk-model-small-en-us-0.15"
+THRESHOLD = 0.7
 
 # Setup Vosk model and recognizer
-model = Model(Model_Path)
+model = Model(MODEL_PATH)
 recognizer = KaldiRecognizer(model, 16000)
 
 # Microphone setup
@@ -80,7 +80,7 @@ def checkCommand(given_command):
             best_match = valid_command
             
     # If similarity goes over threshold, return best match
-    if highest_similarity <= Threshold:
+    if highest_similarity <= THRESHOLD:
         print("No valid command detected with enough similarity.")
         return None
     else:

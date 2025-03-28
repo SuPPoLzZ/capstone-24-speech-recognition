@@ -1,65 +1,35 @@
 from djitellopy import Tello
-import cv2
 import time
+import keyboard
 
-# Initialize and connect to the Tello drone
-drone = Tello()
-drone.connect()
+def send_led_matrix_command(matrix_pattern):
+    # Send the 'EXT mled g' command to control the LED matrix
+    command = f"EXT mled g {matrix_pattern}"
+    tello.send_control_command(command)
+    print(f"Sent command: {command}")
 
+def basic_test():
+    tello.turn_motor_on()
+    time.sleep(5)
+    tello.turn_motor_off()
 
-# Print battery level
-print(f"Battery: {drone.get_battery()}%")
+def get_BasicInfo():
+    print(f"Temp: {tello.get_temperature()}")
+    print(f"Battery: {tello.get_battery()}")
 
-#drone.send_command_with_return("command")
+# Example LED patterns (simplified as strings for this example)
+some_pattern = "0pppppp0"+"pppppppp"+"prrpprrp"+"prrpprrp"+"pppprppp"+"pppppppp"+"0prprpr0"+"0prprpr0"
 
-#drone.query_sdk_version()
-print(f"Temp: {drone.get_temperature()}")
-print(f"Battery: {drone.get_battery()}")
+# Connect to drone
+tello = Tello()
+tello.connect()
+get_BasicInfo()
 
-drone.turn_motor_on()
-time.sleep(5)
-drone.turn_motor_off()
-drone.end()
+# Run the matrix commands
+send_led_matrix_command(some_pattern)  # Set matrix to display to pattern
+time.sleep(3)  # Wait for 1 second
 
-"""
-drone.streamon()
+keyboard.wait()
 
-frame = drone.get_frame_read().frame
-
-cv2.imshow("cap", frame)
-imageFile = f"tello_frame_cap{time.time()}.jpg"
-cv2.imwrite(imageFile, frame)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-drone.streamoff()
-"""
-while True:
-# Takeoff
-    drone.takeoff()
-    drone.land()
-"""
-time.sleep(2)
-
-# Move forward
-drone.move_forward(50)
-time.sleep(2)
-
-# Move backward
-drone.move_back(50)
-time.sleep(2)
-
-# Move left
-drone.move_left(50)
-time.sleep(2)
-
-# Move right
-drone.move_right(50)
-time.sleep(2)
-
-
-# Land the drone
-    drone.land()
-
-# Disconnect
-drone.end()
-"""
+print("Ending")
+tello.end()
