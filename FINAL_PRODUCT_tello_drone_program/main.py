@@ -5,6 +5,7 @@ import voice_control as vc
 
 # Initialize the drone
 Drone = tello.Tello()
+command = ""
 
 def main():
     # Drone setup
@@ -18,13 +19,14 @@ def main():
         # Get voice command input
         command = vc.getVoiceInput()
 
-        if command == "exit":  # On 'Exit' command, stop the loop
+        if command == "exit":
             vc.ExitNow()
-            break
 
-        command_is_valid = vc.checkCommand(command)
-        print(f"Command: {command_is_valid}")
-        time.sleep(1)
+        if command == None:
+            continue
+        else:
+            command_is_valid = vc.checkCommand(command)
+            print(f"Command: {command_is_valid}")
 
         # Optional: Check and display the drone's camera feed (uncomment if needed)
         # img = Drone.get_frame_read().frame

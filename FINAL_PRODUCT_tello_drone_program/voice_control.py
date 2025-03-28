@@ -15,8 +15,7 @@ model = Model(Model_Path)
 recognizer = KaldiRecognizer(model, 16000)
 
 # Microphone setup
-mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
-                             input=True, frames_per_buffer=4096)
+mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=4096)
 mic.start_stream()
 
 Drone = tello.Tello()
@@ -46,12 +45,11 @@ valid_commands = {
 # Function to get voice input and return movement values
 def getVoiceInput():
     print("Press and hold 'Space' to talk...")
-    command = ""
     while not keyboard.is_pressed('space'):  # Wait until spacebar is pressed
         time.sleep(0.1)  # Prevent high CPU usage
 
     print("Listening... (Speak!)")
-
+    command = None
     while keyboard.is_pressed('space'):
         data = mic.read(4096)
         #data = mic.read(1400)
@@ -62,10 +60,7 @@ def getVoiceInput():
         if recognizer.AcceptWaveform(data):
             result = json.loads(recognizer.Result())
             command = result.get("text", "").strip().lower()
-            if command == None:
-                continue
-            else:
-                break
+            break
     
     print("You said:", command if command else "No command detected.")
     return command
