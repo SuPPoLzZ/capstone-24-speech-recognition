@@ -8,8 +8,8 @@ Drone = tello.Tello()
 
 def main():
     # Drone setup
-    Drone.connect()
-    print(f"Battery: {Drone.get_battery()}%")
+    #Drone.connect()
+    #print(f"Battery: {Drone.get_battery()}%")
 
     # Optionally, you can start the video stream in a separate thread to avoid blocking
     #vs.start_video_stream()
