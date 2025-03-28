@@ -1,33 +1,37 @@
-from djitellopy import Tello
 import time
+from djitellopy import Tello
 
-# Initialize Tello drone
-drone = Tello()
+# Initialize the Tello object
+tello = Tello()
 
-def display_x_on_matrix():
-    # Matrix "X" pattern as a single string, all rows in one command
-    matrix_pattern = "1000001 0100010 0010100 0001000 0010100 0100010 1000001"
-    
-    # Send the entire matrix pattern as one command
-    drone.send_expansion_command(f"matrix {matrix_pattern}")
+# Connect to the Tello drone
+tello.connect()
 
-def clear_matrix_display():
-    # Clear the matrix display (turn off all LEDs)
-    clear_pattern = "0000000 0000000 0000000 0000000 0000000 0000000 0000000"
-    drone.send_expansion_command(f"matrix {clear_pattern}")
-    time.sleep(1)
+# Function to send the LED matrix command
+def send_led_matrix_command(matrix_pattern):
+    # Send the 'EXT mled g' command to control the LED matrix
+    command = f"EXT mled  {matrix_pattern}"
+    tello.send_control_command(command)
+    print(f"Sent command: {command}")
 
-# Main execution
-if __name__ == "__main__":
-    # Connect to the drone
-    drone.connect()
+#LED patterns 
+matrix_o = "0pppppp0p000000pp000000pp000000pp000000pp000000pp000000p0pppppp0"
+matrix_x = "p000000p" + "0p0000p0" + "00p00p00" + "000pp000"+ "000pp000" + "00p00p00" + "0p0000p0" +"p000000p"
 
-    # Display the X pattern
-    display_x_on_matrix()
-    time.sleep(4)
 
-    # Clear the matrix after showing the X pattern
-    clear_matrix_display()
+# Run the matrix commands
+try:
+    while True:
+        #send_led_matrix_command(matrix_b3)  # Set matrix to display number 3
+        time.sleep(3)  # Wait for 3 seconds
 
-    # End the connection
-    drone.end()
+        send_led_matrix_command(matrix_x)  # Set matrix to display number 2
+        time.sleep(1)  # Wait for 1 second
+
+        # Uncomment if you want to add matrix_b1 for number 1
+        # send_led_matrix_command(matrix_b1)
+        # time.sleep(1)
+
+except KeyboardInterrupt:
+    print("Program interrupted.")
+    tello.end()
