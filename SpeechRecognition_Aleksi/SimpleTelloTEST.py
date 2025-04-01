@@ -27,9 +27,12 @@ get_BasicInfo()
 
 # Run the matrix commands
 send_led_matrix_command(some_pattern)  # Set matrix to display to pattern
-time.sleep(3)  # Wait for 1 second
+time.sleep(5)  # Wait for 5 second
 
-keyboard.wait()
+print("press space to quit")
+keyboard.wait("space")
+final_pattern = "00000000"+"00000000"+"00000000"+"00000000"+"00000000"+"00000000"+"00000000"+"00000000"
+send_led_matrix_command(final_pattern) # Turns the led matrix off
 
 print("Ending")
 tello.end()
