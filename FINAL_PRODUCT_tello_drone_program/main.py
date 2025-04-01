@@ -5,26 +5,28 @@ import voice_control as vc
 
 # Initialize the drone
 Drone = tello.Tello()
+given_command = ""
 
 def main():
     # Drone setup
-    #Drone.connect()
-    #print(f"Battery: {Drone.get_battery()}%")
+    Drone.connect()
+    print(f"Battery: {Drone.get_battery()}%")
 
     # Optionally, you can start the video stream in a separate thread to avoid blocking
     #vs.start_video_stream()
 
     while not keyboard.is_pressed('k'):
         # Get voice command input
-        command = vc.getVoiceInput()
+        given_command = vc.getVoiceInput()
 
-        if command == "exit":  # On 'Exit' command, stop the loop
+        if given_command == "exit":
             vc.ExitNow()
-            break
 
-        command_is_valid = vc.checkCommand(command)
-        print(f"Command: {command_is_valid}")
-        time.sleep(1)
+        if given_command == None:
+            continue
+        else:
+            command_is_valid = vc.checkCommand(given_command)
+            print(f"Command: {command_is_valid}")
 
         # Optional: Check and display the drone's camera feed (uncomment if needed)
         # img = Drone.get_frame_read().frame

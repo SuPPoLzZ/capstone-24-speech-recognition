@@ -7,17 +7,15 @@ from djitellopy import tello
 import drone_commands as dc
 from difflib import SequenceMatcher
 
-
-Model_Path = "vosk/vosk-model-small-en-us-0.15"
-Threshold = 0.7
+MODEL_PATH = "vosk/vosk-model-small-en-us-0.15"
+THRESHOLD = 0.7
 
 # Setup Vosk model and recognizer
-model = Model(Model_Path)
+model = Model(MODEL_PATH)
 recognizer = KaldiRecognizer(model, 16000)
 
 # Microphone setup
-mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, 
-                             input=True, frames_per_buffer=4096)
+mic = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=4096)
 mic.start_stream()
 
 Drone = tello.Tello()
@@ -46,13 +44,11 @@ valid_commands = {
 
 # Function to get voice input and return movement values
 def getVoiceInput():
-    print("Press and hold 'Space' to talk...")
-    command = ""
-    while not keyboard.is_pressed('space'):  # Wait until spacebar is pressed
-        time.sleep(0.1)  # Prevent high CPU usage
+    print("Press and hold 'Space' to talk, \nPress 'Space' + 'k' quickly to exit")
+    keyboard.wait('space')
 
     print("Listening... (Speak!)")
-
+    given_command = None
     while keyboard.is_pressed('space'):
         data = mic.read(4096)
         #data = mic.read(1400)
@@ -62,14 +58,11 @@ def getVoiceInput():
 
         if recognizer.AcceptWaveform(data):
             result = json.loads(recognizer.Result())
-            command = result.get("text", "").strip().lower()
-            if command == None:
-                continue
-            else:
-                break
+            given_command = result.get("text", "").strip().lower()
+            break
     
-    print("You said:", command if command else "No command detected.")
-    return command
+    print("You said:", given_command if given_command else "No command detected.")
+    return given_command
 
 def checkCommand(given_command):
     # Compare given command with valid commands using similarity
@@ -77,17 +70,17 @@ def checkCommand(given_command):
     best_match = None
 
     # Loop through valid commands & calculate similarity
-    for command in valid_commands:
-        matcher = SequenceMatcher(None, given_command, command)
+    for valid_command in valid_commands:
+        matcher = SequenceMatcher(None, given_command, valid_command)
         similarity = matcher.ratio()
-        print(f"Similarity with '{command}': {similarity}")
+        print(f"Similarity with '{valid_command}': {similarity}")
 
         if similarity > highest_similarity:
             highest_similarity = similarity
-            best_match = command
+            best_match = valid_command
             
     # If similarity goes over threshold, return best match
-    if highest_similarity <= Threshold:
+    if highest_similarity <= THRESHOLD:
         print("No valid command detected with enough similarity.")
         return None
     else:
@@ -100,7 +93,7 @@ def ExitNow():
     try:
         Drone.land()
         time.sleep(1)
-    finally:
         Drone.end()
+    finally:
         mic.stop_stream()
         mic.close()
