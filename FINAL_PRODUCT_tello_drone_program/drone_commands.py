@@ -1,5 +1,6 @@
 from djitellopy import tello
 import time
+import matrix_control as mx
 
 # === DRONE_CONTROL_FUNCTIONS ===
 Drone = tello.Tello()
@@ -8,7 +9,7 @@ Drone = tello.Tello()
 moveSpeed, liftSpeed, rotationSpeed = 25, 25, 50
 
 def Go_left():
-    return Drone.move_left(moveSpeed)
+    return Drone.move_left(moveSpeed) and mx.matrix_left()
 
 def Go_right():
     return Drone.move_right(moveSpeed)
@@ -54,6 +55,7 @@ def Takingoff():
 
 def Testing():
     Drone.turn_motor_on()
+    mx.emergency_matrix()
     time.sleep(10)
     Drone.turn_motor_off()
     print("Test done")

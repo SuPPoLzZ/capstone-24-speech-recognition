@@ -7,6 +7,7 @@ from djitellopy import tello
 import drone_commands as dc
 from difflib import SequenceMatcher
 
+
 Model_Path = "vosk/vosk-model-small-en-us-0.15"
 Threshold = 0.7
 
