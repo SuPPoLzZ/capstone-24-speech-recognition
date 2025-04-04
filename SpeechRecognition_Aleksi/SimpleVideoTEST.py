@@ -1,3 +1,4 @@
+import os
 import cv2
 import time
 from djitellopy import Tello
@@ -11,7 +12,7 @@ time.sleep(2)
 
 # Define the video writer
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-out = cv2.VideoWriter("C:/Users/Aleksandra/Desktop/tello_video.mp4", fourcc, 30.0, (960, 720))
+out = cv2.VideoWriter("videos/tello_video.mp4", fourcc, 30.0, (960, 720))
 
 if not out.isOpened():
     print("Error: VideoWriter failed to open!")
