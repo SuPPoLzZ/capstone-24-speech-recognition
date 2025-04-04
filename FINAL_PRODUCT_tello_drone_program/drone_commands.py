@@ -9,10 +9,16 @@ Drone = tello.Tello()
 moveSpeed, liftSpeed, rotationSpeed = 25, 25, 50
 
 def Go_left():
-    return Drone.move_left(moveSpeed) and mx.left_matrix()
+    try:
+        mx.left_matrix()
+    finally:
+        return Drone.move_left(moveSpeed)
 
 def Go_right():
-    return Drone.move_right(moveSpeed) and mx.right_matrix()
+    try:
+        mx.right_matrix()
+    finally:
+        return Drone.move_right(moveSpeed)
 
 def Go_forward():
     return Drone.move_forward(moveSpeed)
@@ -21,10 +27,16 @@ def Go_back():
     return Drone.move_back(moveSpeed)
 
 def Go_up():
-    return Drone.move_up(liftSpeed) and mx.up_matrix()
+    try:
+        mx.up_matrix()
+    finally:
+        return Drone.move_up(liftSpeed)
 
 def Go_down():
-    return Drone.move_down(liftSpeed) and mx.down_matrix()
+    try:
+        mx.down_matrix()
+    finally:
+        return Drone.move_down(liftSpeed)
 
 def Rotate_right():
     return Drone.rotate_clockwise(rotationSpeed)
