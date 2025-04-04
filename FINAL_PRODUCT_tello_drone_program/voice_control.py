@@ -27,7 +27,7 @@ valid_commands = {
     "go forward": dc.Go_forward,
     "go back": dc.Go_back,
     "go up": dc.Go_up,
-    "go down": dc.Go_down,
+    "go down": dc.Go_down,                                                                                                                                                                                                  
     "rotate left": dc.Rotate_left,
     "rotate right": dc.Rotate_right,
     "spin clockwise": dc.Spin_clockwise,
@@ -39,6 +39,7 @@ valid_commands = {
     "go test": dc.Testing,
     "go best": dc.Testing,
     "go amigo": dc.amin,
+    "go matrix": dc.matrix,
     
     "exit": "Exit the program"
 }
@@ -47,6 +48,9 @@ valid_commands = {
 def getVoiceInput():
     print("Press and hold 'Space' to talk, \nPress 'Space' + 'k' quickly to exit")
     keyboard.wait('space')
+
+    if keyboard.is_pressed('k'):
+        exit
 
     print("Listening... (Speak!)")
     given_command = None
@@ -98,3 +102,5 @@ def ExitNow():
     finally:
         mic.stop_stream()
         mic.close()
+
+

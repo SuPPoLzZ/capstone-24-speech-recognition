@@ -15,7 +15,7 @@ def main():
     # Optionally, you can start the video stream in a separate thread to avoid blocking
     #vs.start_video_stream()
 
-    while not keyboard.is_pressed('k'):
+    while True:
         # Get voice command input
         given_command = vc.getVoiceInput()
 
@@ -24,6 +24,11 @@ def main():
 
         if given_command == None:
             continue
+
+        if keyboard.is_pressed('k'):
+            print("Exiting program.")
+            break
+
         else:
             command_is_valid = vc.checkCommand(given_command)
             print(f"Command: {command_is_valid}")
