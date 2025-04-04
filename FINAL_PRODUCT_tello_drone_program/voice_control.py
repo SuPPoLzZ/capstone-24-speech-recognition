@@ -23,7 +23,7 @@ Drone = tello.Tello()
 # Define valid commands for the drone
 valid_commands = {
     "go left": dc.Go_left,
-    "go right": dc.Go_right,
+    "go right": dc.Go_right, 
     "go forward": dc.Go_forward,
     "go back": dc.Go_back,
     "go up": dc.Go_up,
@@ -38,6 +38,7 @@ valid_commands = {
     "take off": dc.Takingoff,
     "go test": dc.Testing,
     "go best": dc.Testing,
+    "go amigo": dc.amin,
     
     "exit": "Exit the program"
 }

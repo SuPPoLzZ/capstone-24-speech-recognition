@@ -2,7 +2,7 @@ import time
 from djitellopy import Tello
 
 # Initialize the Tello object
-#tello = Tello()
+tello = Tello()
 
 # Connect to the Tello drone
 #tello.connect()
@@ -36,12 +36,15 @@ def send_scroll_text_command(text_matrix):
 
 
 def emergency_matrix():
-    send_led_matrix_command(matrix_emergency)  # Set matrix to display number 2
-    tello.send_expansion_command("led 255 0 0")
-    time.sleep(0.5) 
-    send_led_matrix_command(matrix_emergency_inverted)  # Set matrix to display number 2
-    tello.send_expansion_command("led 255 255 255")
-    tello.send_expansion_command("led 0 0 0")
+    i=0
+    while i < 4:
+        send_led_matrix_command(matrix_emergency)  # Set matrix to display number 2
+        tello.send_expansion_command("led 255 0 0")
+        time.sleep(0.5) 
+        send_led_matrix_command(matrix_emergency_inverted)  # Set matrix to display number 2
+        tello.send_expansion_command("led 255 255 255")
+        tello.send_expansion_command("led 0 0 0")
+        i += 1
 
 
 def take_off_matrix():
@@ -126,7 +129,9 @@ def scroll_smile():
         
         time.sleep(0.3)  # Adjust delay for scrolling speed
 
-
+def smile_matrix():
+    send_led_matrix_command(matrix_smile)
+    
 #directional matrix
 def up_matrix():
     send_led_matrix_command(matrix_up)
