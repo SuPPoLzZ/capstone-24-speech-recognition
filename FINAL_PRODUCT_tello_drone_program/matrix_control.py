@@ -25,6 +25,8 @@ matrix_flip_forward = "00000000" + "0pppppp0" + "p000000p" + "p000000p" + "p0000
 matrix_flip_left = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p" + "0p0000p0" + "0pppppp0" + "00000000"
 matrix_flip_right = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p" + "0p0000p0" + "0pppppp0" + "00000000"
 
+matrix_rotate_left ="00ppp000"+"0p000000"+"p0000ppp"+"p0000pp0"+"p0000p0p"+"p000000p"+"0p0000p0"+"00pppp00"
+
 
 # Function to send the LED matrix command
 def send_led_matrix_command(matrix_pattern):
@@ -162,6 +164,8 @@ def flip_left_matrix():
 def flip_right_matrix():
     send_led_matrix_command(matrix_flip_right)  
 
+def rotate_left():
+    send_led_matrix_command(matrix_rotate_left)
     
 
 
@@ -169,29 +173,28 @@ def flip_right_matrix():
 #debugging 
 if __name__ == "__main__":
     # Connect to the drone
-    tello.connect() 
+    tello = Tello()
+    tello.connect()
     print(f"Battery: {tello.get_battery()}%")
-    
-    # Test the functions
-    take_off_matrix()
-    time.sleep(1)
-    flip_forward_matrix()
-    time.sleep(1)
-    flip_backward_matrix()
-    time.sleep(1)
-    flip_left_matrix()
-    time.sleep(1)
-    flip_right_matrix()
-    time.sleep(1)
-    up_matrix()
-    time.sleep(1)
-    down_matrix()
-    time.sleep(1)
-    left_matrix()
-    time.sleep(1)
-    right_matrix()
-    time.sleep(1)
-    emergency_matrix()
-    time.sleep(1)
-    smile_matrix()
-    time.sleep(1)
+
+    # List of matrix functions to run
+    matrix_functions = [
+        take_off_matrix,
+        flip_forward_matrix,
+        flip_backward_matrix,
+        flip_left_matrix,
+        flip_right_matrix,
+        up_matrix,
+        down_matrix,
+        left_matrix,
+        right_matrix,
+        emergency_matrix,
+        smile_matrix
+    ]
+
+    for matrix_func in matrix_functions:
+        matrix_func()  
+        time.sleep(1) 
+
+
+
