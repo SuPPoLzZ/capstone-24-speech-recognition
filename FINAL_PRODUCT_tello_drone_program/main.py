@@ -16,6 +16,8 @@ def initialize_drone():
     else:
         has_matrix_screen = False
     
+    
+    
 
 def main():
     # Initialize the drone
