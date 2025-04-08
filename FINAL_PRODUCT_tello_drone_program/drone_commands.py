@@ -121,6 +121,28 @@ def LandingSequence():
 def Takingoff():
     return Drone.takeoff() and mx.take_off_matrix()
 
+<<<<<<< Updated upstream
+=======
+def amin():
+    Drone.takeoff()
+    time.sleep(3)
+    Drone.rotate_clockwise(360)
+    time.sleep(3)
+    Drone.rotate_counter_clockwise(360)
+    time.sleep(5)
+    Drone.flip_forward()
+    time.sleep(3)
+    Drone.land()
+
+def MotorTest():
+    Drone.turn_motor_on()
+    time.sleep(5)
+    Drone.turn_motor_off()
+    print("Motors ok")
+    return
+
+
+>>>>>>> Stashed changes
 def Testing():
     Drone.turn_motor_on()
     time.sleep(5)

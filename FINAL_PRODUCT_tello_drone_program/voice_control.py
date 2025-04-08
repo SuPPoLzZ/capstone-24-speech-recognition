@@ -36,8 +36,8 @@ valid_commands = {
     "do backflip": dc.Backflip,
     "go land": dc.LandingSequence,
     "take off": dc.Takingoff,
-    "go test": dc.Testing,
-    "go best": dc.Testing,
+    "go test": dc.MotorTest,
+    "go best": dc.MotorTest,
     "go amigo": dc.amin,
     "go matrix": dc.matrix,
     
@@ -45,14 +45,26 @@ valid_commands = {
 }
 
 # Function to get voice input and return movement values
-def getVoiceInput():
-    print("Press and hold 'Space' to talk, \nPress 'Space' + 'k' quickly to exit")
-    keyboard.wait('space')
+def GetVoiceInput():
+    print("Press 'Space' to continue to speech, \nPress 'k' to exit")
+    
+    # Wait until space is pressed
+    while True:
+        if keyboard.is_pressed('k'):
+            print("Exit detected.")
+            return "exit"
+        elif keyboard.is_pressed('space'):
+            break
+        time.sleep(0.01)  # Light CPU load
 
+<<<<<<< Updated upstream
     if keyboard.is_pressed('k'):
         exit
 
     print("Listening... (Speak!)")
+=======
+    print("Listening...(Hold 'Space' to talk)")
+>>>>>>> Stashed changes
     given_command = None
     while keyboard.is_pressed('space'):
         data = mic.read(4096)
@@ -69,7 +81,7 @@ def getVoiceInput():
     print("You said:", given_command if given_command else "No command detected.")
     return given_command
 
-def checkCommand(given_command):
+def CheckCommand(given_command):
     # Compare given command with valid commands using similarity
     highest_similarity = 0
     best_match = None
@@ -91,7 +103,10 @@ def checkCommand(given_command):
     else:
         print(f"Command '{best_match}' detected with similarity {highest_similarity}")
         executed_command = valid_commands.get(best_match, None)
-        return executed_command()
+        return executed_command
+
+def RunCommand(verified_command):
+    return verified_command()
 
 def ExitNow():
     print("Exiting...")
@@ -99,6 +114,8 @@ def ExitNow():
         Drone.land()
         time.sleep(1)
         Drone.end()
+    except:
+        print("Drone already on the ground")
     finally:
         mic.stop_stream()
         mic.close()

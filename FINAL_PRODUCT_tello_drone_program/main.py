@@ -16,15 +16,26 @@ def main():
     #vs.start_video_stream()
 
     while True:
+<<<<<<< Updated upstream
         # Get voice command input
         given_command = vc.getVoiceInput()
+=======
+        
+        if keyboard.is_pressed('k'):
+            print("Emergency stop triggered!")
+            vc.ExitNow()
+            break
+>>>>>>> Stashed changes
 
+        # Step 1: Get voice commands
+        given_command = vc.GetVoiceInput()
         if given_command == "exit":
             vc.ExitNow()
-
+            break
         if given_command == None:
             continue
 
+<<<<<<< Updated upstream
         if keyboard.is_pressed('k'):
             print("Exiting program.")
             break
@@ -32,6 +43,23 @@ def main():
         else:
             command_is_valid = vc.checkCommand(given_command)
             print(f"Command: {command_is_valid}")
+=======
+        # Step 2: Verifiy command
+        verified_command = vc.CheckCommand(given_command)
+        if verified_command is None:
+            print(f"Invalid command: '{given_command}' not recognized")
+            continue
+        print(f"Valid Command: {given_command}")
+
+        # Step 3: Ask to Run command
+        print("Do you want to run the command? \nKeyboard: \n - y to run \n - n to cancel")
+        result = get_y_or_n()
+        if result == 'y':
+            vc.RunCommand(verified_command)
+        elif result == 'n':
+            print("Command cancelled")
+            continue
+>>>>>>> Stashed changes
 
         # Optional: Check and display the drone's camera feed (uncomment if needed)
         # img = Drone.get_frame_read().frame
@@ -42,8 +70,12 @@ def main():
         # Sleep to avoid overloading the control loop
         time.sleep(0.1)
 
-    # Clean-up
-    vc.ExitNow()
+def get_y_or_n():
+    answer = input("Do you want to continue? (y/n): ").strip().lower()
+    if answer in ['y', 'n']:
+        return answer
+    else:
+        return None
 
 if __name__ == "__main__":
     main()
