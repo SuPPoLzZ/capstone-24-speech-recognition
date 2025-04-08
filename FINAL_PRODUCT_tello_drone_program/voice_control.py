@@ -36,10 +36,8 @@ valid_commands = {
     "do backflip": dc.Backflip,
     "go land": dc.LandingSequence,
     "take off": dc.Takingoff,
-    "go test": dc.MotorTest,
-    "go best": dc.MotorTest,
-    "go amigo": dc.amin,
-    "go matrix": dc.matrix,
+    "go test": dc.Testing,
+    "go best": dc.Testing,
     
     "exit": "Exit the program"
 }
@@ -57,14 +55,7 @@ def GetVoiceInput():
             break
         time.sleep(0.01)  # Light CPU load
 
-<<<<<<< Updated upstream
-    if keyboard.is_pressed('k'):
-        exit
-
-    print("Listening... (Speak!)")
-=======
     print("Listening...(Hold 'Space' to talk)")
->>>>>>> Stashed changes
     given_command = None
     while keyboard.is_pressed('space'):
         data = mic.read(4096)
@@ -119,5 +110,3 @@ def ExitNow():
     finally:
         mic.stop_stream()
         mic.close()
-
-

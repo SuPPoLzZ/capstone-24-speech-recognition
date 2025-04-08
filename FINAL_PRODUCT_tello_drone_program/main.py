@@ -16,16 +16,12 @@ def main():
     #vs.start_video_stream()
 
     while True:
-<<<<<<< Updated upstream
-        # Get voice command input
-        given_command = vc.getVoiceInput()
-=======
-        
+        """
         if keyboard.is_pressed('k'):
             print("Emergency stop triggered!")
             vc.ExitNow()
             break
->>>>>>> Stashed changes
+        """
 
         # Step 1: Get voice commands
         given_command = vc.GetVoiceInput()
@@ -35,15 +31,6 @@ def main():
         if given_command == None:
             continue
 
-<<<<<<< Updated upstream
-        if keyboard.is_pressed('k'):
-            print("Exiting program.")
-            break
-
-        else:
-            command_is_valid = vc.checkCommand(given_command)
-            print(f"Command: {command_is_valid}")
-=======
         # Step 2: Verifiy command
         verified_command = vc.CheckCommand(given_command)
         if verified_command is None:
@@ -52,14 +39,17 @@ def main():
         print(f"Valid Command: {given_command}")
 
         # Step 3: Ask to Run command
-        print("Do you want to run the command? \nKeyboard: \n - y to run \n - n to cancel")
+        print("Do you want to run the command? \nKeyboard: \n - y to run \n - n to cancel \n - k to exit")
         result = get_y_or_n()
         if result == 'y':
             vc.RunCommand(verified_command)
         elif result == 'n':
             print("Command cancelled")
             continue
->>>>>>> Stashed changes
+        elif result == 'k':
+            print("Emergency stop triggered!")
+            vc.ExitNow()
+            break
 
         # Optional: Check and display the drone's camera feed (uncomment if needed)
         # img = Drone.get_frame_read().frame
@@ -71,8 +61,8 @@ def main():
         time.sleep(0.1)
 
 def get_y_or_n():
-    answer = input("Do you want to continue? (y/n): ").strip().lower()
-    if answer in ['y', 'n']:
+    answer = input("Do you want to continue? (y/n)\nPress 'k' to quit: ").strip().lower()
+    if answer in ['y', 'n', 'k']:
         return answer
     else:
         return None
