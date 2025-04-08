@@ -1,74 +1,77 @@
 from djitellopy import tello
-import time
 import matrix_control as mx
+import main as m
+import time
 
-# === DRONE_CONTROL_FUNCTIONS ===
+# Initialize the drone
 Drone = tello.Tello()
 
-# Movement variables
-moveSpeed, liftSpeed, rotationSpeed = 20, 20, 90
+def try_display_matrix(matrix_command):
+    if m.has_matrix_screen:
+        try:
+            matrix_command()  # Try to execute the matrix command
+        except Exception as e:
+            print(f"Error displaying matrix: {e}")
 
-# ============SHOWROOM COMMANDS=============
+# Movement functions for the drone with matrix checks
+def Go_up(distance):
+    Drone.move_up(distance)
+    try_display_matrix(mx.up_matrix)
 
-def Go_left():
-    try:
-        mx.left_matrix()
-    finally:
-        return Drone.move_left(moveSpeed)
+def Go_down(distance):
+    Drone.move_down(distance)
+    try_display_matrix(mx.down_matrix)
 
-def Go_right():
-    try:
-        mx.right_matrix()
-    finally:
-        return Drone.move_right(moveSpeed)
+def Go_left(distance):
+    Drone.move_left(distance)
+    try_display_matrix(mx.left_matrix)
 
-def Go_forward():
-    return Drone.move_forward(moveSpeed)
+def Go_right(distance):
+    Drone.move_right(distance)
+    try_display_matrix(mx.right_matrix)
 
-def Go_back():
-    return Drone.move_back(moveSpeed)
+def Go_forward(distance):
+    Drone.move_forward(distance)
+    try_display_matrix(mx.matrix_o)
 
-def Go_up():
-    try:
-        mx.up_matrix()
-    finally:
-        return Drone.move_up(liftSpeed)
+def Go_back(distance):
+    Drone.move_back(distance)
+    try_display_matrix(mx.matrix_x)
 
-def Go_down():
-    try:
-        mx.down_matrix()
-    finally:
-        return Drone.move_down(liftSpeed)
-
+# Rotation functions
 def Rotate_right():
-    return Drone.rotate_clockwise(rotationSpeed)
+    Drone.rotate_clockwise(90)
 
 def Rotate_left():
-    return Drone.rotate_counter_clockwise(rotationSpeed)
+    Drone.rotate_counter_clockwise(90)
 
-def Spin_clockwise():
-    return Drone.rotate_clockwise(rotationSpeed*4)
+def Spin_clockwise(speed):
+    Drone.rotate_clockwise(speed)
 
-def Spin_counter():
-    return Drone.rotate_counter_clockwise(rotationSpeed*4)
-
+# Flip actions with matrix feedback
 def Frontflip():
-    return Drone.flip_forward()
+    try_display_matrix(mx.smile_matrix)
+    Drone.flip_forward()
+    
 
 def Backflip():
-    return Drone.flip_back()
+    try_display_matrix(mx.smile_matrix)
+    Drone.flip_back()
+
+# Takeoff and landing with matrix feedback
+def Takingoff():
+    Drone.takeoff()
+    try_display_matrix(mx.take_off_matrix)
 
 def LandingSequence():
+    try_display_matrix(mx.emergency_matrix)
     print("Landing...")
     Drone.land()
     time.sleep(3)
-    mx.emergency_matrix()
-    return
 
-def Takingoff():
-    return Drone.takeoff() and mx.take_off_matrix()
-
+# Testing sequence
 def Testing():
+    try_display_matrix(mx.emergency_matrix)
     Drone.turn_motor_on()
     time.sleep(5)
     Drone.turn_motor_off()
