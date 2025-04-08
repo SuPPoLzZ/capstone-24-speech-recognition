@@ -20,6 +20,11 @@ matrix_emergency= "pprrrrpp"+"prrpprrp"+"rrrpprrr"+"rrrpprrr"+"rrrpprrr"+"rrrrrr
 matrix_emergency_inverted ="rrpppprr"+"rpprrppr"+"ppprrppp"+"ppprrppp"+"ppprrppp"+"pppppppp"+"rpprrppr"+"rrpppprr" 
 matrix_smile ="00000000"+"0pp00pp0"+"0pp00pp0"+"00000000"+"p000000p"+"0p0000p0"+"00pppp00"+"00000000"
 
+matrix_flip_backward = "00000000" + "0pppppp0" + "p000000p" + "p000000p" + "p000000p" + "p000000p" + "0pppppp0" + "00000000"
+matrix_flip_forward = "00000000" + "0pppppp0" + "p000000p" + "p000000p" + "p000000p" + "0p0000p0" + "00pppp00" + "00000000"
+matrix_flip_left = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p" + "0p0000p0" + "0pppppp0" + "00000000"
+matrix_flip_right = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p" + "0p0000p0" + "0pppppp0" + "00000000"
+
 
 # Function to send the LED matrix command
 def send_led_matrix_command(matrix_pattern):
@@ -40,7 +45,7 @@ def emergency_matrix():
     while i < 4:
         send_led_matrix_command(matrix_emergency)  # Set matrix to display number 2
         tello.send_expansion_command("led 255 0 0")
-        time.sleep(0.5) 
+        time.sleep(1) 
         send_led_matrix_command(matrix_emergency_inverted)  # Set matrix to display number 2
         tello.send_expansion_command("led 255 255 255")
         tello.send_expansion_command("led 0 0 0")
@@ -144,15 +149,53 @@ def left_matrix():
 
 def right_matrix():
     send_led_matrix_command(matrix_right)
+
+def flip_forward_matrix():
+    send_led_matrix_command(matrix_flip_forward)
+
+def flip_backward_matrix():
+    send_led_matrix_command(matrix_flip_backward)
+
+def flip_left_matrix():
+    send_led_matrix_command(matrix_flip_left)   
+
+def flip_right_matrix():
+    send_led_matrix_command(matrix_flip_right)  
+
     
 
 
 
 #debugging 
+if __name__ == "__main__":
+    # Connect to the drone
+    tello.connect() 
+    print(f"Battery: {tello.get_battery()}%")
+    
+    # Test the functions
+    take_off_matrix()
+    time.sleep(1)
+    flip_forward_matrix()
+    time.sleep(1)
+    flip_backward_matrix()
+    time.sleep(1)
+    flip_left_matrix()
+    time.sleep(1)
+    flip_right_matrix()
+    time.sleep(1)
+    up_matrix()
+    time.sleep(1)
+    down_matrix()
+    time.sleep(1)
+    left_matrix()
+    time.sleep(1)
+    right_matrix()
+    time.sleep(1)
+    emergency_matrix()
+    time.sleep(1)
+    smile_matrix()
+    time.sleep(1)
+    
 
-#scroll_smile()
-#emergency_matrix()
-#down_matrix()
-#up_matrix()
-#left_matrix()
-#right_matrix()
+
+
