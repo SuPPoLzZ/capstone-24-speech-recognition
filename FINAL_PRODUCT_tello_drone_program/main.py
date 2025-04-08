@@ -7,6 +7,7 @@ import voice_control as vc
 Drone = tello.Tello()
 given_command = ""
 
+
 def initialize_drone():
     # Flag to specify if the drone has a matrix screen 
     has_matrix_screen = False
