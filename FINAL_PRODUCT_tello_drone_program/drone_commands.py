@@ -6,62 +6,9 @@ import matrix_control as mx
 Drone = tello.Tello()
 
 # Movement variables
-moveSpeed, liftSpeed, rotationSpeed = 15, 15, 100
+moveSpeed, liftSpeed, rotationSpeed = 20, 20, 90
 
 # ============SHOWROOM COMMANDS=============
-def amin():
-    Drone.takeoff()
-    Drone.move_up(150)
-    time.sleep(3)
-    Drone.rotate_clockwise(90)
-    time.sleep(3)
-    Drone.rotate_counter_clockwise(90)
-    time.sleep(5)
-    Drone.flip_forward()
-    time.sleep(2)
-    Drone.move_back(20)
-    time.sleep(2)
-    Drone.flip_left()
-    time.sleep(2)
-    Drone.move_right(20)
-    time.sleep(2)
-    Drone.flip_right()
-    time.sleep(2)
-    Drone.move_left(20)
-    time.sleep(3)
-    Drone.land()
-
-def matrix():
-    mx.emergency_matrix()
-    time.sleep(1)
-    mx.up_matrix()
-    time.sleep(1)
-    mx.down_matrix()
-    time.sleep(1)
-    mx.left_matrix()
-    time.sleep(1)
-    mx.right_matrix()
-    time.sleep(1)
-    mx.smile_matrix()
-    time.sleep(5)
-    mx.up_matrix()
-    Drone.takeoff()
-    Drone.move_up(50)
-    mx.smile_matrix()
-    time.sleep(3)
-    mx.left_matrix()
-    Drone.move_left(20)
-    mx.right_matrix()
-    Drone.move_right(20)
-    mx.smile_matrix()
-    time.sleep(3)
-    mx.down_matrix()
-    Drone.move_down(20)
-    mx.smile_matrix()  
-    time.sleep(3)
-    Drone.land()
-    mx.emergency_matrix()
-    
 
 def Go_left():
     try:
@@ -121,32 +68,8 @@ def LandingSequence():
 def Takingoff():
     return Drone.takeoff() and mx.take_off_matrix()
 
-<<<<<<< Updated upstream
-=======
-def amin():
-    Drone.takeoff()
-    time.sleep(3)
-    Drone.rotate_clockwise(360)
-    time.sleep(3)
-    Drone.rotate_counter_clockwise(360)
-    time.sleep(5)
-    Drone.flip_forward()
-    time.sleep(3)
-    Drone.land()
-
-def MotorTest():
-    Drone.turn_motor_on()
-    time.sleep(5)
-    Drone.turn_motor_off()
-    print("Motors ok")
-    return
-
-
->>>>>>> Stashed changes
 def Testing():
     Drone.turn_motor_on()
     time.sleep(5)
     Drone.turn_motor_off()
     print("Test done")
-    
-
