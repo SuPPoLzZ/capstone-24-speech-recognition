@@ -7,7 +7,19 @@ import voice_control as vc
 Drone = tello.Tello()
 given_command = ""
 
+def initialize_drone():
+    # Flag to specify if the drone has a matrix screen 
+    has_matrix_screen = False
+    input("Does the drone have a matrix screen? (y/n): ").strip().lower()
+    if has_matrix_screen == 'y':
+        has_matrix_screen = True
+    else:
+        has_matrix_screen = False
+    
+
 def main():
+    # Initialize the drone
+    initialize_drone()
     # Drone setup
     Drone.connect()
     print(f"Battery: {Drone.get_battery()}%")
@@ -16,16 +28,11 @@ def main():
     #vs.start_video_stream()
 
     while True:
-<<<<<<< Updated upstream
-        # Get voice command input
-        given_command = vc.getVoiceInput()
-=======
         
         if keyboard.is_pressed('k'):
             print("Emergency stop triggered!")
             vc.ExitNow()
             break
->>>>>>> Stashed changes
 
         # Step 1: Get voice commands
         given_command = vc.GetVoiceInput()
@@ -35,15 +42,6 @@ def main():
         if given_command == None:
             continue
 
-<<<<<<< Updated upstream
-        if keyboard.is_pressed('k'):
-            print("Exiting program.")
-            break
-
-        else:
-            command_is_valid = vc.checkCommand(given_command)
-            print(f"Command: {command_is_valid}")
-=======
         # Step 2: Verifiy command
         verified_command = vc.CheckCommand(given_command)
         if verified_command is None:
@@ -59,7 +57,6 @@ def main():
         elif result == 'n':
             print("Command cancelled")
             continue
->>>>>>> Stashed changes
 
         # Optional: Check and display the drone's camera feed (uncomment if needed)
         # img = Drone.get_frame_read().frame

@@ -4,9 +4,6 @@ from djitellopy import Tello
 # Initialize the Tello object
 tello = Tello()
 
-# Connect to the Tello drone
-#tello.connect()
-
 #LED patterns 
 matrix_o = "0pppppp0"+"p000000p"+"p000000p"+"p000000p"+"p000000p"+"p000000p"+"p000000p"+"0pppppp0"
 matrix_x = "p000000p"+"0p0000p0"+"00p00p00"+"000pp000"+"000pp000"+"00p00p00"+"0p0000p0"+"p000000p"
