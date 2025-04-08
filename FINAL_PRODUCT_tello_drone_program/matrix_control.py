@@ -25,6 +25,8 @@ matrix_flip_forward = "00000000" + "0pppppp0" + "p000000p" + "p000000p" + "p0000
 matrix_flip_left = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p" + "0p0000p0" + "0pppppp0" + "00000000"
 matrix_flip_right = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p" + "0p0000p0" + "0pppppp0" + "00000000"
 
+matrix_rotate_clockwise = "00rrrr00" + "0r0000r0" + "r000000r" + "r0000r0r" + "r0000rr0" + "r0000rrr" + "0r000000" + "00rrr000"
+
 
 # Function to send the LED matrix command
 def send_led_matrix_command(matrix_pattern):
