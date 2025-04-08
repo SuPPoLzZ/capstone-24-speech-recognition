@@ -30,8 +30,7 @@ valid_commands = {
     "go down": dc.Go_down,                                                                                                                                                                                                  
     "rotate left": dc.Rotate_left,
     "rotate right": dc.Rotate_right,
-    "spin clockwise": dc.Spin_clockwise,
-    "spin counter": dc.Spin_counter,
+    "spin clockwise": dc.Spin_clockwise, #    "spin counter": dc.Spin_counter,
     "do front flip": dc.Frontflip,
     "do backflip": dc.Backflip,
     "go land": dc.LandingSequence,
@@ -44,7 +43,7 @@ valid_commands = {
 
 # Function to get voice input and return movement values
 def GetVoiceInput():
-    print("Press 'Space' to continue to speech, \nPress 'k' to exit")
+    print("Press 'Space' to continue to speech \n(You should hold it, just in case), \nPress 'k' to exit")
     
     # Wait until space is pressed
     while True:

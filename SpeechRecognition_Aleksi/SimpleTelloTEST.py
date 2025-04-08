@@ -36,8 +36,8 @@ def basic_test():
     
 
 def get_BasicInfo():
-    print(f"Temp: {tello.get_temperature()}")
-    print(f"Battery: {tello.get_battery()}")
+    print(f"Temp: {Drone.get_temperature()}")
+    print(f"Battery: {Drone.get_battery()}")
 
 # Example LED patterns (simplified as strings for this example)
 some_pattern = "0pppppp0"+"pppppppp"+"prrpprrp"+"prrpprrp"+"pppprppp"+"pppppppp"+"0prprpr0"+"0prprpr0"
@@ -56,4 +56,4 @@ basic_test()
 #send_led_matrix_command(final_pattern) # Turns the led matrix off
 
 print("Ending")
-tello.end()
+Drone.end()
