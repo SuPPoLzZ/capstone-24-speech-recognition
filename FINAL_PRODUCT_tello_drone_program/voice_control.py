@@ -38,8 +38,6 @@ valid_commands = {
     "take off": dc.Takingoff,
     "go test": dc.Testing,
     "go best": dc.Testing,
-    "go amigo": dc.amin,
-    "go matrix": dc.matrix,
     
     "exit": "Exit the program"
 }

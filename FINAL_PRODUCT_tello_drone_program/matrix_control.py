@@ -173,7 +173,6 @@ def rotate_left():
 #debugging 
 if __name__ == "__main__":
     # Connect to the drone
-    tello = Tello()
     tello.connect()
     print(f"Battery: {tello.get_battery()}%")
 
@@ -189,12 +188,10 @@ if __name__ == "__main__":
         left_matrix,
         right_matrix,
         emergency_matrix,
-        smile_matrix
+        smile_matrix,
+        rotate_left
     ]
 
     for matrix_func in matrix_functions:
         matrix_func()  
-        time.sleep(1) 
-
-
-
+        time.sleep(1)
