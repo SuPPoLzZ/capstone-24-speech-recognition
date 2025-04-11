@@ -5,6 +5,7 @@ import keyboard
 from vosk import Model, KaldiRecognizer
 from djitellopy import tello
 import drone_commands as dc
+import video_stream as vids
 from difflib import SequenceMatcher
 
 MODEL_PATH = "vosk/vosk-model-small-en-us-0.15"
@@ -103,9 +104,10 @@ def ExitNow():
     try:
         Drone.land()
         time.sleep(1)
+        vids.endVideo()
         Drone.end()
     except:
-        print("Drone already on the ground")
+        print("Drone already on the ground and/or no video was filmed")
     finally:
         mic.stop_stream()
         mic.close()
