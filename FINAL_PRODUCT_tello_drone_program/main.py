@@ -14,18 +14,19 @@ elevation = 20 # Default elevation for movement commands 20cm if anything else i
 
 def initialize_drone():
 
-    input("Does the drone have a matrix screen? (y/n): ").strip().lower()
-    if has_matrix_screen == 'y':
+    matrix = input("Does the drone have a matrix screen? (y/n): ").strip().lower()
+    if matrix == 'y':
         has_matrix_screen = True
-    elif has_matrix_screen == 'n':
+    elif matrix == 'n':
         has_matrix_screen = False
 
-    input("Enter the distance for movement commands (default 20cm): ").strip()
+    distance = input("Enter the distance for movement commands (default 20cm): ").strip()
     if distance == '':
         distance = 20
     else:
         distance = int(distance)
-    input("Enter the elevation for movement commands (default 20cm [150 cm is requaired for flips]): ").strip()
+        
+    elevation = input("Enter the elevation for movement commands (default 20cm [150 cm is requaired for flips]): ").strip()
     if elevation == '':
         elevation = 20
     else:
