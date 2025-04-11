@@ -167,6 +167,12 @@ def rotate_left():
 
 def rotate_right():
     send_led_matrix_command(matrix_rotate_right)
+
+def o_matrix():
+    send_led_matrix_command(matrix_o)
+
+def x_matrix():
+    send_led_matrix_command(matrix_x)
     
 
 

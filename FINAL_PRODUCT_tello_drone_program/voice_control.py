@@ -53,9 +53,12 @@ def GetVoiceInput():
             return "exit"
         elif keyboard.is_pressed('space'):
             break
-        time.sleep(0.01)  # Light CPU load
+        time.sleep(0.1)  # Light CPU load
 
-    print("Listening...(Hold 'Space' to talk)")
+    if keyboard.is_pressed('k'):
+        exit
+
+    print("Listening... (Speak!)")
     given_command = None
     while keyboard.is_pressed('space'):
         data = mic.read(4096)
@@ -110,3 +113,5 @@ def ExitNow():
     finally:
         mic.stop_stream()
         mic.close()
+
+

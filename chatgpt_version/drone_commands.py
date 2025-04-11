@@ -1,78 +1,76 @@
 from djitellopy import tello
 import matrix_control as mx
-import main as m
 import time
+import main as m
 
-# Initialize the drone
+# === Drone Setup === #
 Drone = tello.Tello()
 
+# === Configs (can be updated externally from main) === #
 distance = m.distance
 elevation = m.elevation
-matrix = m.matrix
+matrix_enabled = m.matrix
 
-def try_display_matrix(matrix_command):
-    if matrix:
+# === Matrix Display Wrapper === #
+def try_display_matrix(matrix_func):
+    if matrix_enabled:
         try:
-            matrix_command()  # Try to execute the matrix command
+            matrix_func()
         except Exception as e:
-            print(f"Error displaying matrix: {e}")
+            print(f"[Matrix Error] {e}")
     else:
-        print("Matrix screen not available. Skipping matrix display.")
+        print("Matrix not enabled — skipping visual.")
 
-# Movement functions for the drone with matrix checks
-def Go_up(elevation):
+# === Movement Commands === #
+def Go_up():
     try_display_matrix(mx.up_matrix)
     Drone.move_up(elevation)
-    
 
-def Go_down(elevation):
+def Go_down():
     try_display_matrix(mx.down_matrix)
     Drone.move_down(elevation)
 
-def Go_left(distance):
+def Go_left():
     try_display_matrix(mx.left_matrix)
     Drone.move_left(distance)
 
-def Go_right(distance):
+def Go_right():
     try_display_matrix(mx.right_matrix)
     Drone.move_right(distance)
-    
 
-def Go_forward(distance):
+def Go_forward():
     try_display_matrix(mx.o_matrix)
     Drone.move_forward(distance)
-    
 
-def Go_back(distance):
+def Go_back():
     try_display_matrix(mx.x_matrix)
     Drone.move_back(distance)
 
-# Rotation functions
+# === Rotational Commands === #
 def Rotate_right():
     Drone.rotate_clockwise(90)
 
 def Rotate_left():
     Drone.rotate_counter_clockwise(90)
 
-def Spin_clockwise(speed):
+def Spin_clockwise(speed=100):
     try_display_matrix(mx.rotate_right)
     Drone.rotate_clockwise(speed)
 
-def Spin_counter(speed):
+def Spin_counter(speed=100):
     try_display_matrix(mx.rotate_left)
     Drone.rotate_counter_clockwise(speed)
 
-# Flip actions with matrix feedback
+# === Flip Commands === #
 def Frontflip():
     try_display_matrix(mx.smile_matrix)
     Drone.flip_forward()
-    
 
 def Backflip():
     try_display_matrix(mx.smile_matrix)
     Drone.flip_back()
 
-# Takeoff and landing with matrix feedback
+# === Takeoff & Landing === #
 def Takingoff():
     try_display_matrix(mx.take_off_matrix)
     Drone.takeoff()
@@ -83,12 +81,11 @@ def LandingSequence():
     Drone.land()
     time.sleep(3)
 
-# Testing sequence
+# === Testing Demo === #
 def Testing():
-
     Drone.turn_motor_on()
-     # List of matrix functions to run
-    matrix_functions = [
+
+    matrix_sequence = [
         mx.take_off_matrix,
         mx.flip_forward_matrix,
         mx.flip_backward_matrix,
@@ -105,13 +102,12 @@ def Testing():
         mx.rotate_right,
     ]
 
-    if matrix:
-        for matrix_func in matrix_functions:
-            matrix_func()
+    if matrix_enabled:
+        for func in matrix_sequence:
+            func()
             time.sleep(1)
     else:
-        print("Matrix screen not available. Skipping matrix display.")
+        print("Matrix not enabled — skipping matrix test.")
 
-    
     Drone.turn_motor_off()
-    print("Test done")
+    print("✅ Test complete.")

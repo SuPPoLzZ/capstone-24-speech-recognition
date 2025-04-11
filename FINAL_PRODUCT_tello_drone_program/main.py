@@ -8,25 +8,27 @@ Drone = tello.Tello()
 given_command = ""
 
 
-has_matrix_screen = False   # Flag to specify if the drone has a matrix screen 
+matrix = False # Flag to specify if the drone has a matrix screen 
 distance = 20 # Default distance for movement commands 20cm if anything else is not specified 
 elevation = 20 # Default elevation for movement commands 20cm if anything else is not specified
 
 def initialize_drone():
 
+    global matrix, distance, elevation
+    
     matrix = input("Does the drone have a matrix screen? (y/n): ").strip().lower()
     if matrix == 'y':
-        has_matrix_screen = True
+        matrix = True
     elif matrix == 'n':
-        has_matrix_screen = False
+        matrix = False
 
     distance = input("Enter the distance for movement commands (default 20cm): ").strip()
     if distance == '':
         distance = 20
     else:
         distance = int(distance)
-        
-    elevation = input("Enter the elevation for movement commands (default 20cm [150 cm is requaired for flips]): ").strip()
+
+    elevation = input("Enter the elevation for movement commands (default 20cm [150 cm is required for flips]): ").strip()
     if elevation == '':
         elevation = 20
     else:
