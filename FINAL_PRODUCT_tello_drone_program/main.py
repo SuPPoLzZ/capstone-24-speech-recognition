@@ -7,16 +7,29 @@ import voice_control as vc
 Drone = tello.Tello()
 given_command = ""
 
+
+has_matrix_screen = False   # Flag to specify if the drone has a matrix screen 
+distance = 20 # Default distance for movement commands 20cm if anything else is not specified 
+elevation = 20 # Default elevation for movement commands 20cm if anything else is not specified
+
 def initialize_drone():
-    # Flag to specify if the drone has a matrix screen 
-    has_matrix_screen = False
+
     input("Does the drone have a matrix screen? (y/n): ").strip().lower()
     if has_matrix_screen == 'y':
         has_matrix_screen = True
-    else:
+    elif has_matrix_screen == 'n':
         has_matrix_screen = False
-    
-    
+
+    input("Enter the distance for movement commands (default 20cm): ").strip()
+    if distance == '':
+        distance = 20
+    else:
+        distance = int(distance)
+    input("Enter the elevation for movement commands (default 20cm [150 cm is requaired for flips]): ").strip()
+    if elevation == '':
+        elevation = 20
+    else:
+        elevation = int(elevation)
     
 
 def main():

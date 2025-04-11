@@ -23,6 +23,7 @@ matrix_flip_left = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p
 matrix_flip_right = "00000000" + "0pppppp0" + "0p0000p0" + "p000000p" + "p000000p" + "0p0000p0" + "0pppppp0" + "00000000"
 
 matrix_rotate_left ="00ppp000"+"0p000000"+"p0000ppp"+"p0000pp0"+"p0000p0p"+"p000000p"+"0p0000p0"+"00pppp00"
+matrix_rotate_right = "00pppp00"+"000000p0"+"ppp0000p"+"0pp0000p"+"p0p0000p"+"p000000p"+"0p0000p0"+"00pppp00"
 
 
 # Function to send the LED matrix command
@@ -39,13 +40,13 @@ def send_scroll_text_command(text_matrix):
     send_led_matrix_command(matrix_pattern)
 
 
-def emergency_matrix():
+def emergency_matrix():  # Uses the matrix_emergency and matrix_emergency_inverted patterns to create a flashing effect
     i=0
     while i < 4:
-        send_led_matrix_command(matrix_emergency)  # Set matrix to display number 2
+        send_led_matrix_command(matrix_emergency) 
         tello.send_expansion_command("led 255 0 0")
         time.sleep(1) 
-        send_led_matrix_command(matrix_emergency_inverted)  # Set matrix to display number 2
+        send_led_matrix_command(matrix_emergency_inverted)  
         tello.send_expansion_command("led 255 255 255")
         tello.send_expansion_command("led 0 0 0")
         i += 1
@@ -163,6 +164,9 @@ def flip_right_matrix():
 
 def rotate_left():
     send_led_matrix_command(matrix_rotate_left)
+
+def rotate_right():
+    send_led_matrix_command(matrix_rotate_right)
     
 
 
@@ -172,6 +176,7 @@ if __name__ == "__main__":
     # Connect to the drone
     tello.connect()
     print(f"Battery: {tello.get_battery()}%")
+    has_matrix_screen = True # works only with edu tello drone 
 
     # List of matrix functions to run
     matrix_functions = [
@@ -185,8 +190,10 @@ if __name__ == "__main__":
         left_matrix,
         right_matrix,
         emergency_matrix,
+        rotate_left,
         smile_matrix,
-        rotate_left
+        rotate_left,
+        rotate_right,
     ]
 
     for matrix_func in matrix_functions:
