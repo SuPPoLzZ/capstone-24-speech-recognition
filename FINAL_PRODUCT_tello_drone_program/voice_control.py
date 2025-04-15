@@ -6,7 +6,6 @@ from vosk import Model, KaldiRecognizer
 from difflib import SequenceMatcher
 from djitellopy import tello
 import drone_commands as dc
-import video_stream as vids
 
 MODEL_PATH = "vosk/vosk-model-small-en-us-0.15"
 THRESHOLD = 0.7
@@ -104,7 +103,6 @@ def ExitNow():
     try:
         Drone.land()
         time.sleep(1)
-        vids.endVideo()
         Drone.end()
     except:
         print("Drone already on the ground and/or no video was filmed")

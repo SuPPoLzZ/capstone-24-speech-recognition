@@ -1,3 +1,4 @@
+import cv2
 import time
 import threading
 from djitellopy import tello
@@ -11,13 +12,6 @@ given_command = ""
 has_matrix_screen = False
 
 def initialize_drone():
-    # Flag to specify if the drone has a matrix screen 
-    global has_matrix_screen
-    matrix_Choice = input("Does the drone have a matrix screen? (y/n): ").strip().lower()
-    if matrix_Choice == 'y':
-        has_matrix_screen = True
-    else:
-        has_matrix_screen = False
     
     takeVideo = input("Do you want to take a video? (y/n): ").strip().lower()
     if takeVideo == 'y':

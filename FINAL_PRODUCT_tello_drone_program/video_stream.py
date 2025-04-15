@@ -5,6 +5,7 @@ from djitellopy import Tello
 
 # Ensure output directory exists
 os.makedirs("videos", exist_ok=True)
+frame = ""
 
 def TakeDroneVideo():
     tello = Tello()
@@ -15,7 +16,6 @@ def TakeDroneVideo():
     time.sleep(2)
 
     frame = tello.get_frame_read().frame
-    endVideo = False
 
     TARGET_FPS = 60.0
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
@@ -31,7 +31,7 @@ def TakeDroneVideo():
     frame_count = 0
 
     while True:
-
+        frame = tello.get_frame_read().frame
         if frame is None:
             print("Error: No frames recieved!")
             continue
@@ -46,17 +46,7 @@ def TakeDroneVideo():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        if endVideo == True:
-            break
-
     print(f"✅ Video saved with {frame_count} frames")
     out.release()  # Stop the recording
     tello.streamoff()
     cv2.destroyAllWindows()
-
-def EndVideo():
-    if endVideo == False:
-        endVideo = True
-    else:
-        endVideo = False
-    return endVideo

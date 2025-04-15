@@ -7,13 +7,24 @@ import matrix_control as mx
 Drone = tello.Tello()
 
 def DefineMovements():
-    global moveDistance, rotation
+    SetMatrixStatus()
+    global moveDistance
+    global rotation
     moveDistance = SetNewMovement()
     rotation = SetNewRotation()
-    
+
+def SetMatrixStatus():
+    # Flag to specify if the drone has a matrix screen 
+    global has_matrix_screen
+    matrix_Choice = input("Does the drone have a matrix screen? (y/n): ").strip().lower()
+    if matrix_Choice == 'y':
+        has_matrix_screen = True
+    else:
+        has_matrix_screen = False
+
 def SetNewMovement():
     movementDef = 50
-    newMovement = input("Enter the distance to move(range 20-500, default 50):")
+    newMovement = int(input("Enter the distance to move(range 20-500, default 50):"))
     if newMovement in range(20, 501):
         print(f"MoveDistance set to {newMovement}")
         return newMovement
@@ -23,7 +34,7 @@ def SetNewMovement():
 
 def SetNewRotation():
     rotationDef = 90
-    newRotation = input("\nEnter the new angle to rotate(range 1-360, default 90):")
+    newRotation = int(input("\nEnter the new angle to rotate(range 1-360, default 90):"))
     if newRotation in range(1, 361):
         print(f"Rotation set to {newRotation}")
         return newRotation
@@ -31,9 +42,8 @@ def SetNewRotation():
         print("Outside of range, using default")
         return rotationDef
 
-
 def try_display_matrix(matrix_command):
-    if m.has_matrix_screen == True:
+    if has_matrix_screen == True:
         try:
             matrix_command()  # Try to execute the matrix command
         except Exception as e:
@@ -43,42 +53,42 @@ def try_display_matrix(matrix_command):
 
 # Movement functions for the drone with matrix checks
 def Go_up():
-    print("Going up")
+    print(f"Going up by {moveDistance}")
     Drone.move_up(moveDistance)
     try_display_matrix(mx.up_matrix)
 
 def Go_down():
-    print("Going down")
+    print(f"Going down by {moveDistance}")
     Drone.move_down(moveDistance)
     try_display_matrix(mx.down_matrix)
 
 def Go_left():
-    print("Going left")
+    print(f"Going left by {moveDistance}")
     Drone.move_left(moveDistance)
     try_display_matrix(mx.left_matrix)
 
 def Go_right():
-    print("Going right")
+    print(f"Going right by {moveDistance}")
     Drone.move_right(moveDistance)
     try_display_matrix(mx.right_matrix)
 
 def Go_forward():
-    print("Going forward")
+    print(f"Going forward by {moveDistance}")
     Drone.move_forward(moveDistance)
     try_display_matrix(mx.matrix_o)
 
 def Go_back():
-    print("Going back")
+    print(f"Going back by {moveDistance}")
     Drone.move_back(moveDistance)
     try_display_matrix(mx.matrix_x)
 
 # Rotation functions
 def Rotate_right():
-    print("rotating right")
+    print(f"rotating right by {rotation}")
     Drone.rotate_clockwise(rotation)
 
 def Rotate_left():
-    print("rotating left")
+    print(f"rotating left by {rotation}")
     Drone.rotate_counter_clockwise(rotation)
 
 def Spin_clockwise():
