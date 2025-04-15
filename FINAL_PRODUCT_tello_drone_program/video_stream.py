@@ -6,10 +6,9 @@ from djitellopy import Tello
 # Ensure output directory exists
 os.makedirs("videos", exist_ok=True)
 
-tello = Tello()
-
 def TakeDroneVideo():
-
+    tello = Tello()
+    tello.connect()
     tello.streamon()
 
     # Delay for start

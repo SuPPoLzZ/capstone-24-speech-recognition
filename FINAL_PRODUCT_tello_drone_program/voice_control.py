@@ -3,10 +3,10 @@ import json
 import pyaudio
 import keyboard
 from vosk import Model, KaldiRecognizer
+from difflib import SequenceMatcher
 from djitellopy import tello
 import drone_commands as dc
 import video_stream as vids
-from difflib import SequenceMatcher
 
 MODEL_PATH = "vosk/vosk-model-small-en-us-0.15"
 THRESHOLD = 0.7

@@ -1,4 +1,5 @@
 import time
+import threading
 from djitellopy import tello
 import voice_control as vc
 import drone_commands as dc
@@ -7,6 +8,7 @@ import video_stream as vids
 # Initialize the drone
 Drone = tello.Tello()
 given_command = ""
+has_matrix_screen = False
 
 def initialize_drone():
     # Flag to specify if the drone has a matrix screen 
@@ -20,10 +22,10 @@ def initialize_drone():
     takeVideo = input("Do you want to take a video? (y/n): ").strip().lower()
     if takeVideo == 'y':
         print("Taking video, you can quit the video by pressing 'q'")
-        vids.TakeDroneVideo()
+        video_thread = threading.Thread(target=vids.TakeDroneVideo, daemon = True)
+        video_thread.start()
     else:
         print("No video")
-    
     dc.DefineMovements()
 
 def main():
@@ -35,7 +37,6 @@ def main():
     initialize_drone()
 
     while True:
-
         # Step 1: Get voice commands
         given_command = vc.GetVoiceInput()
         if given_command == "exit":

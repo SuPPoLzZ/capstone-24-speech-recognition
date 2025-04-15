@@ -1,7 +1,7 @@
-from djitellopy import tello
-import matrix_control as mx
-import main as m
 import time
+from djitellopy import tello
+import main as m
+import matrix_control as mx
 
 # Initialize the drone
 Drone = tello.Tello()
@@ -14,7 +14,7 @@ def DefineMovements():
 def SetNewMovement():
     movementDef = 50
     newMovement = input("Enter the distance to move(range 20-500, default 50):")
-    if newMovement == range(20, 500):
+    if newMovement in range(20, 501):
         print(f"MoveDistance set to {newMovement}")
         return newMovement
     else:
@@ -24,7 +24,7 @@ def SetNewMovement():
 def SetNewRotation():
     rotationDef = 90
     newRotation = input("\nEnter the new angle to rotate(range 1-360, default 90):")
-    if newRotation == range(1, 360):
+    if newRotation in range(1, 361):
         print(f"Rotation set to {newRotation}")
         return newRotation
     else:
@@ -33,7 +33,7 @@ def SetNewRotation():
 
 
 def try_display_matrix(matrix_command):
-    if m.has_matrix_screen:
+    if m.has_matrix_screen == True:
         try:
             matrix_command()  # Try to execute the matrix command
         except Exception as e:
