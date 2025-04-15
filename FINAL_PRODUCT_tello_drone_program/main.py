@@ -1,5 +1,4 @@
 import time
-import keyboard
 from djitellopy import tello
 import voice_control as vc
 import drone_commands as dc
@@ -20,11 +19,12 @@ def initialize_drone():
     
     takeVideo = input("Do you want to take a video? (y/n): ").strip().lower()
     if takeVideo == 'y':
-        print("Taking video")
+        print("Taking video, you can quit the video by pressing 'q'")
         vids.TakeDroneVideo()
     else:
         print("No video")
     
+    dc.DefineMovements()
 
 def main():
     # Drone setup
@@ -33,9 +33,6 @@ def main():
 
     # Initialize the drone
     initialize_drone()
-
-    # Optionally, you can start the video stream in a separate thread to avoid blocking
-    #vs.start_video_stream()
 
     while True:
 
@@ -70,18 +67,12 @@ def main():
         else:
             print("Wrong input, continuing!")
             continue
-
-        # Optional: Check and display the drone's camera feed (uncomment if needed)
-        # img = Drone.get_frame_read().frame
-        # img = cv2.resize(img, (1080, 720))
-        # cv2.imshow("DroneCapture", img)
-        # cv2.waitKey(1)
         
         # Sleep to avoid overloading the control loop
         time.sleep(0.1)
 
 def get_y_or_n():
-    answer = input("Do you want to continue? (y/n): ").strip().lower()
+    answer = input("Answer here: ").strip().lower()
     if answer in ['y', 'n', 'k']:
         return answer
     else:
