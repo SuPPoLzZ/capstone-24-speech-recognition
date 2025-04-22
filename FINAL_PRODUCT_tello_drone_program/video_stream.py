@@ -1,21 +1,21 @@
 import os
 import cv2
 import time
-from djitellopy import Tello
+from djitellopy import tello
 
 # Ensure output directory exists
 os.makedirs("videos", exist_ok=True)
 frame = ""
 
 def TakeDroneVideo():
-    tello = Tello()
-    tello.connect()
-    tello.streamon()
+    Drone = tello.Tello()
+    Drone.connect()
+    Drone.streamon()
 
     # Delay for start
     time.sleep(2)
 
-    frame = tello.get_frame_read().frame
+    frame = Drone.get_frame_read().frame
 
     TARGET_FPS = 60.0
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
@@ -23,7 +23,7 @@ def TakeDroneVideo():
 
     if not out.isOpened():
         print("Error: VideoWriter failed to open!")
-        tello.streamoff()
+        Drone.streamoff()
         return
     else:
         print("VideoWriter is working.")
@@ -31,7 +31,7 @@ def TakeDroneVideo():
     frame_count = 0
 
     while True:
-        frame = tello.get_frame_read().frame
+        frame = Drone.get_frame_read().frame
         if frame is None:
             print("Error: No frames recieved!")
             continue
@@ -48,5 +48,5 @@ def TakeDroneVideo():
 
     print(f"✅ Video saved with {frame_count} frames")
     out.release()  # Stop the recording
-    tello.streamoff()
+    Drone.streamoff()
     cv2.destroyAllWindows()

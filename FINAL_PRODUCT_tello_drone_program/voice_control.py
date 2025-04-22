@@ -105,7 +105,7 @@ def ExitNow():
         time.sleep(1)
         Drone.end()
     except:
-        print("Drone already on the ground and/or no video was filmed")
+        print("Drone already on the ground")
     finally:
         mic.stop_stream()
         mic.close()

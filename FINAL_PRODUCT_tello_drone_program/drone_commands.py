@@ -1,6 +1,5 @@
 import time
 from djitellopy import tello
-import main as m
 import matrix_control as mx
 
 # Initialize the drone
@@ -24,22 +23,34 @@ def SetMatrixStatus():
 
 def SetNewMovement():
     movementDef = 50
-    newMovement = int(input("Enter the distance to move(range 20-500, default 50):"))
-    if newMovement in range(20, 501):
-        print(f"MoveDistance set to {newMovement}")
-        return newMovement
-    else:
-        print("Outside of range, using default")
+    newMovement = input("Enter the distance to move.\n(range 20-500, default 50):")
+    try:
+        if int(newMovement) in range(20, 501):
+            print(f"MoveDistance set to {newMovement}")
+            return newMovement
+        else:
+            print("Outside of range, using default")
+            return movementDef
+    except:
+        print("Error in input value, Input Not INT")
+    finally:
+        print(f"Using the default movement, {movementDef}.")
         return movementDef
 
 def SetNewRotation():
     rotationDef = 90
-    newRotation = int(input("\nEnter the new angle to rotate(range 1-360, default 90):"))
-    if newRotation in range(1, 361):
-        print(f"Rotation set to {newRotation}")
-        return newRotation
-    else:
-        print("Outside of range, using default")
+    newRotation = input("\nEnter the new angle to rotate.\n(range 1-360, default 90):")
+    try:
+        if int(newRotation) in range(1, 361):
+            print(f"Rotation set to {newRotation}")
+            return newRotation
+        else:
+            print("Outside of range, using default")
+            return rotationDef
+    except:
+        print("Error in input value, Input Not INT")
+    finally:
+        print(f"Using the default rotation, {rotationDef}")
         return rotationDef
 
 def try_display_matrix(matrix_command):
@@ -54,33 +65,33 @@ def try_display_matrix(matrix_command):
 # Movement functions for the drone with matrix checks
 def Go_up():
     print(f"Going up by {moveDistance}")
-    Drone.move_up(moveDistance)
     try_display_matrix(mx.up_matrix)
+    Drone.move_up(moveDistance)
 
 def Go_down():
     print(f"Going down by {moveDistance}")
-    Drone.move_down(moveDistance)
     try_display_matrix(mx.down_matrix)
+    Drone.move_down(moveDistance)
 
 def Go_left():
     print(f"Going left by {moveDistance}")
-    Drone.move_left(moveDistance)
     try_display_matrix(mx.left_matrix)
+    Drone.move_left(moveDistance)
 
 def Go_right():
     print(f"Going right by {moveDistance}")
-    Drone.move_right(moveDistance)
     try_display_matrix(mx.right_matrix)
+    Drone.move_right(moveDistance)
 
 def Go_forward():
     print(f"Going forward by {moveDistance}")
-    Drone.move_forward(moveDistance)
     try_display_matrix(mx.matrix_o)
+    Drone.move_forward(moveDistance)    
 
 def Go_back():
     print(f"Going back by {moveDistance}")
-    Drone.move_back(moveDistance)
     try_display_matrix(mx.matrix_x)
+    Drone.move_back(moveDistance)
 
 # Rotation functions
 def Rotate_right():
@@ -109,12 +120,12 @@ def Backflip():
 # Takeoff and landing with matrix feedback
 def Takingoff():
     print("Taking off")
-    Drone.takeoff()
     try_display_matrix(mx.take_off_matrix)
+    Drone.takeoff()
 
 def LandingSequence():
-    try_display_matrix(mx.emergency_matrix)
     print("Landing...")
+    try_display_matrix(mx.emergency_matrix)
     Drone.land()
     time.sleep(3)
 

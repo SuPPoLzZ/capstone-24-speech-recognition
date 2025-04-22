@@ -1,8 +1,8 @@
 import time
-from djitellopy import Tello
+from djitellopy import tello
 
 # Initialize the Tello object
-tello = Tello()
+Drone = tello.Tello()
 
 #LED patterns 
 matrix_o = "0pppppp0"+"p000000p"+"p000000p"+"p000000p"+"p000000p"+"p000000p"+"p000000p"+"0pppppp0"
@@ -29,7 +29,7 @@ matrix_rotate_left ="00ppp000"+"0p000000"+"p0000ppp"+"p0000pp0"+"p0000p0p"+"p000
 def send_led_matrix_command(matrix_pattern):
     # Send the 'EXT mled g' command to control the LED matrix IT HAS TO BE g documentation said that its color 'rgb' but only works when g is specified
     command = f"EXT mled g {matrix_pattern}"
-    tello.send_control_command(command)
+    Drone.send_control_command(command)
     print(f"Sent command: {command}")
 
 
@@ -43,16 +43,16 @@ def emergency_matrix():
     i=0
     while i < 4:
         send_led_matrix_command(matrix_emergency)  # Set matrix to display number 2
-        tello.send_expansion_command("led 255 0 0")
+        Drone.send_expansion_command("led 255 0 0")
         time.sleep(1) 
         send_led_matrix_command(matrix_emergency_inverted)  # Set matrix to display number 2
-        tello.send_expansion_command("led 255 255 255")
-        tello.send_expansion_command("led 0 0 0")
+        Drone.send_expansion_command("led 255 255 255")
+        Drone.send_expansion_command("led 0 0 0")
         i += 1
 
 
 def take_off_matrix():
-    tello.send_expansion_command("led 0 255 0")
+    Drone.send_expansion_command("led 0 255 0")
     send_led_matrix_command(matrix_smile)
 
 
@@ -170,8 +170,8 @@ def rotate_left():
 #debugging 
 if __name__ == "__main__":
     # Connect to the drone
-    tello.connect()
-    print(f"Battery: {tello.get_battery()}%")
+    Drone.connect()
+    print(f"Battery: {Drone.get_battery()}%")
 
     # List of matrix functions to run
     matrix_functions = [
