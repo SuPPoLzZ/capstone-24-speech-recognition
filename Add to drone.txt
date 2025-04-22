@@ -1,3 +1,7 @@
 Add to drone:
 - matrix order in commands, DONE
 - input arvojen error (now only takes int, if empty or char/string -> should go to default, now causes error), DONE?
+
+Add to powerpoint
+ - solutions
+    - compare voice input to existing commands, and ask do you mean {command_name}

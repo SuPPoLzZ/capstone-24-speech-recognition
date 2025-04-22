@@ -17,8 +17,8 @@ def TakeDroneVideo():
 
     frame = Drone.get_frame_read().frame
 
-    TARGET_FPS = 60.0
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    TARGET_FPS = 120.0
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v") # mp4v OR XVID
     out = cv2.VideoWriter("videos/tello_video.mp4", fourcc, TARGET_FPS, (960, 720))
 
     if not out.isOpened():
