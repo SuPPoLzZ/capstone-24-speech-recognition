@@ -11,8 +11,7 @@ Drone = tello.Tello()
 given_command = ""
 has_matrix_screen = False
 
-def initialize_drone():
-    
+def initialize_drone():    
     takeVideo = input("Do you want to take a video? (y/n): ").strip().lower()
     if takeVideo == 'y':
         print("Taking video, you can quit the video by pressing 'q'")
